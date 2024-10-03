@@ -46,6 +46,9 @@
       "@benzinga/session-context": [
         "libs/react-utils/session-context/src/index.ts"
       ],
+      "@benzinga/socket-client": [
+        "libs/native-utils/socket-client/src/index.ts"
+      ],
       "@benzinga/subscribable": [
         "libs/native-utils/subscribable/src/index.ts"
       ],

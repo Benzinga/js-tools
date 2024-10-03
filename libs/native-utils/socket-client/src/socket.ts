@@ -1,5 +1,5 @@
 import { safeAwait, SafeError, safeResilient } from '@benzinga/safe-await';
-import { ExtendedSubscribable, SubscribableEvent } from './subscribable';
+import { ExtendedSubscribable, SubscribableEvent } from '@benzinga/subscribable';
 interface SocketRequestEvent extends SubscribableEvent<'request'> {
   msg: string | ArrayBuffer | ArrayBufferView | Blob;
 }

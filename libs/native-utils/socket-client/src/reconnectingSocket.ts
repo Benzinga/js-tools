@@ -1,5 +1,5 @@
 import SubscribableSocket, { SocketState, SubscribableSocketEvent, WebSocketProps } from './socket';
-import { ExtendedSubscribable, SubscribableEvent, Subscription } from './subscribable';
+import { ExtendedSubscribable, SubscribableEvent, Subscription } from '@benzinga/subscribable';
 import { SubscribableSleepWakeUp } from './wakeUp';
 interface SocketDisconnectEvent extends SubscribableEvent<'disconnected'> {
   errorEvent: CloseEvent;

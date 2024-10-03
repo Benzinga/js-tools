@@ -1,4 +1,4 @@
-import { Subscribable } from './subscribable';
+import { Subscribable } from '@benzinga/subscribable';
 import workerify from './workerify';
 
 const detectWakeupSource = `
@@ -40,11 +40,11 @@ export class SubscribableSleepWakeUp extends Subscribable<SubscribableSleepWakeU
     this.dispatch({ type: 'wake_up' } as WakeUpEvent);
   };
 
-  protected onFirstSubscription = (): void => {
+  protected override onFirstSubscription = (): void => {
     reconnectArray.add(this);
   };
 
-  protected onZeroSubscriptions = (): void => {
+  protected override onZeroSubscriptions = (): void => {
     reconnectArray.delete(this);
   };
 }
