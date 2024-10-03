@@ -1,0 +1,9 @@
+{
+  "name": "react-utils-widget-tools",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react-utils/widget-tools/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project react-utils-widget-tools --web",
+  "targets": {}
+}

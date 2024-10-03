@@ -1,12 +1,9 @@
-# utils-safe-await
+# safe-await
 
-This library was generated with [Nx](https://nx.dev).
+This Project is Made Possible thanks to
 
-## Running unit tests
-
-Run `nx test utils-safe-await` to execute the unit tests via [Jest](https://jestjs.io).
-
-# Safe-Await
+[![Benzinga Logo](https://import.cdn.thinkific.com/222214/D3r5EJy9SZaNsaY7dQsj_Benzinga-logo-navy.svg)](www.benzinga.com)
+[![ZSoft Logo](../../../images/ZSoft.png)](https://github.com/znackasha)
 
 Safe Await is a simple way to make sure that our errors are handled.
 

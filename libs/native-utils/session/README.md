@@ -1,8 +1,9 @@
 # Session Package
 
-This Project is Made Possible by generis support of
+This Project is Made Possible thanks to
 
 [![Benzinga Logo](https://import.cdn.thinkific.com/222214/D3r5EJy9SZaNsaY7dQsj_Benzinga-logo-navy.svg)](www.benzinga.com)
+[![ZSoft Logo](../../../images/ZSoft.png)](https://github.com/znackasha)
 
 The Session package is a tool that keeps track of all the mangers that you have. Allowing you request, store and fetch data with a ability to configure the Managers before there use.
 

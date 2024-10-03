@@ -34,6 +34,9 @@
       "@benzinga/logging-manager": [
         "libs/managers/logging/src/index.ts"
       ],
+      "@benzinga/restful-client": [
+        "libs/native-utils/restful-client/src/index.ts"
+      ],
       "@benzinga/safe-await": [
         "libs/native-utils/safe-await/src/index.ts"
       ],
@@ -49,8 +52,8 @@
       "@benzinga/useSubscribable": [
         "libs/react-utils/use-subscribable/src/index.ts"
       ],
-      "@benzinga/restful-client": [
-        "libs/native-utils/restful-client/src/index.ts"
+      "@benzinga/widget-tools": [
+        "libs/react-utils/widget-tools/src/index.ts"
       ]
     }
   },
