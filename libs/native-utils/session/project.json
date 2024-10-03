@@ -1,0 +1,36 @@
+{
+  "name": "native-utils-session",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/native-utils/session/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist\\{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/native-utils/session",
+        "main": "libs/native-utils/session/src/index.ts",
+        "tsConfig": "libs/native-utils/session/tsconfig.lib.json",
+        "assets": [
+          "libs/native-utils/session/*.md"
+        ]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist\\{projectRoot}"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "native-utils-subscribable",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/native-utils/subscribable/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist\\{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/native-utils/subscribable",
+        "main": "libs/native-utils/subscribable/src/index.ts",
+        "tsConfig": "libs/native-utils/subscribable/tsconfig.lib.json",
+        "assets": [
+          "libs/native-utils/subscribable/*.md"
+        ]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist\\{projectRoot}"
+      }
+    }
+  }
+}

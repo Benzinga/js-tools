@@ -1,0 +1,9 @@
+{
+  "name": "react-utils-use-subscribable",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react-utils/use-subscribable/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project react-utils-use-subscribable --web",
+  "targets": {}
+}

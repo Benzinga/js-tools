@@ -1,0 +1,36 @@
+{
+  "name": "native-utils-restful-client",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/native-utils/restful-client/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist\\{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/native-utils/restful-client",
+        "main": "libs/native-utils/restful-client/src/index.ts",
+        "tsConfig": "libs/native-utils/restful-client/tsconfig.lib.json",
+        "assets": [
+          "libs/native-utils/restful-client/*.md"
+        ]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist\\{projectRoot}"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "native-utils-helper-functions",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/native-utils/helper-functions/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist\\{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/native-utils/helper-functions",
+        "main": "libs/native-utils/helper-functions/src/index.ts",
+        "tsConfig": "libs/native-utils/helper-functions/tsconfig.lib.json",
+        "assets": [
+          "libs/native-utils/helper-functions/*.md"
+        ]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist\\{projectRoot}"
+      }
+    }
+  }
+}

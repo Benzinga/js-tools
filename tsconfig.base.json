@@ -1,0 +1,61 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "strictBuiltinIteratorReturn": true,
+    "alwaysStrict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@benzinga/containers": [
+        "libs/native-utils/containers/src/index.ts"
+      ],
+      "@benzinga/helper-functions": [
+        "libs/native-utils/helper-functions/src/index.ts"
+      ],
+      "@benzinga/logging-manager": [
+        "libs/managers/logging/src/index.ts"
+      ],
+      "@benzinga/safe-await": [
+        "libs/native-utils/safe-await/src/index.ts"
+      ],
+      "@benzinga/session": [
+        "libs/native-utils/session/src/index.ts"
+      ],
+      "@benzinga/session-context": [
+        "libs/react-utils/session-context/src/index.ts"
+      ],
+      "@benzinga/subscribable": [
+        "libs/native-utils/subscribable/src/index.ts"
+      ],
+      "@benzinga/useSubscribable": [
+        "libs/react-utils/use-subscribable/src/index.ts"
+      ],
+      "@benzinga/restful-client": [
+        "libs/native-utils/restful-client/src/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
+}
