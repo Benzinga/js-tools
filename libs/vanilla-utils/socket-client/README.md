@@ -1,4 +1,4 @@
-# Iter
+# Socket-client
 
 This Project is Made Possible thanks to
 
@@ -8,8 +8,8 @@ This Project is Made Possible thanks to
 
 ## Building
 
-Run `nx build native-utils-iter` to build the library.
+Run `nx build vanilla-utils-socket-client` to build the library.
 
 ## Running unit tests
 
-Run `nx test native-utils-iter` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test vanilla-utils-socket-client` to execute the unit tests via [Jest](https://jestjs.io).

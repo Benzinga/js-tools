@@ -1,7 +1,7 @@
 {
-  "name": "native-utils-restful-client",
+  "name": "vanilla-utils-helper-functions",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/native-utils/restful-client/src",
+  "sourceRoot": "libs/vanilla-utils/helper-functions/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -19,11 +19,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/native-utils/restful-client",
-        "main": "libs/native-utils/restful-client/src/index.ts",
-        "tsConfig": "libs/native-utils/restful-client/tsconfig.lib.json",
+        "outputPath": "dist/libs/vanilla-utils/helper-functions",
+        "main": "libs/vanilla-utils/helper-functions/src/index.ts",
+        "tsConfig": "libs/vanilla-utils/helper-functions/tsconfig.lib.json",
         "assets": [
-          "libs/native-utils/restful-client/*.md"
+          "libs/vanilla-utils/helper-functions/*.md"
         ]
       }
     },

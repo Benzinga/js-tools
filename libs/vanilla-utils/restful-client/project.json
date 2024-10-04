@@ -1,7 +1,7 @@
 {
-  "name": "native-utils-safe-await",
+  "name": "vanilla-utils-restful-client",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/native-utils/safe-await/src",
+  "sourceRoot": "libs/vanilla-utils/restful-client/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -19,11 +19,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/native-utils/safe-await",
-        "main": "libs/native-utils/safe-await/src/index.ts",
-        "tsConfig": "libs/native-utils/safe-await/tsconfig.lib.json",
+        "outputPath": "dist/libs/vanilla-utils/restful-client",
+        "main": "libs/vanilla-utils/restful-client/src/index.ts",
+        "tsConfig": "libs/vanilla-utils/restful-client/tsconfig.lib.json",
         "assets": [
-          "libs/native-utils/safe-await/*.md"
+          "libs/vanilla-utils/restful-client/*.md"
         ]
       }
     },

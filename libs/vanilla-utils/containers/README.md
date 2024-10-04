@@ -1,4 +1,4 @@
-# restful-client
+# Containers
 
 This Project is Made Possible thanks to
 
@@ -10,8 +10,8 @@ This library was generated with [Nx](https://nx.dev).
 
 ## Building
 
-Run `nx build native-utils-restful-client` to build the library.
+Run `nx build vanilla-utils-containers` to build the library.
 
 ## Running unit tests
 
-Run `nx test native-utils-restful-client` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test vanilla-utils-containers` to execute the unit tests via [Jest](https://jestjs.io).

@@ -1,7 +1,7 @@
 {
-  "name": "native-utils-helper-functions",
+  "name": "vanilla-utils-iter",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/native-utils/helper-functions/src",
+  "sourceRoot": "libs/vanilla-utils/iter/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -19,11 +19,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/native-utils/helper-functions",
-        "main": "libs/native-utils/helper-functions/src/index.ts",
-        "tsConfig": "libs/native-utils/helper-functions/tsconfig.lib.json",
+        "outputPath": "dist/libs/vanilla-utils/iter",
+        "main": "libs/vanilla-utils/iter/src/index.ts",
+        "tsConfig": "libs/vanilla-utils/iter/tsconfig.lib.json",
         "assets": [
-          "libs/native-utils/helper-functions/*.md"
+          "libs/vanilla-utils/iter/*.md"
         ]
       }
     },

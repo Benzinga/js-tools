@@ -1,4 +1,4 @@
-# Socket-client
+# restful-client
 
 This Project is Made Possible thanks to
 
@@ -6,10 +6,12 @@ This Project is Made Possible thanks to
 
 [![ZSoft Logo](https://raw.githubusercontent.com/ZNackasha/CDN/refs/heads/main/zsoft-no-size.svg)](https://github.com/znackasha)
 
+This library was generated with [Nx](https://nx.dev).
+
 ## Building
 
-Run `nx build native-utils-socket-client` to build the library.
+Run `nx build vanilla-utils-restful-client` to build the library.
 
 ## Running unit tests
 
-Run `nx test native-utils-socket-client` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test vanilla-utils-restful-client` to execute the unit tests via [Jest](https://jestjs.io).

@@ -1,4 +1,4 @@
-# helper-functions
+# Iter
 
 This Project is Made Possible thanks to
 
@@ -6,12 +6,10 @@ This Project is Made Possible thanks to
 
 [![ZSoft Logo](https://raw.githubusercontent.com/ZNackasha/CDN/refs/heads/main/zsoft-no-size.svg)](https://github.com/znackasha)
 
-This library was generated with [Nx](https://nx.dev).
-
 ## Building
 
-Run `nx build native-utils-helper-functions` to build the library.
+Run `nx build vanilla-utils-iter` to build the library.
 
 ## Running unit tests
 
-Run `nx test native-utils-helper-functions` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test vanilla-utils-iter` to execute the unit tests via [Jest](https://jestjs.io).

@@ -1,7 +1,7 @@
 {
-  "name": "native-utils-containers",
+  "name": "vanilla-utils-subscribable",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/native-utils/containers/src",
+  "sourceRoot": "libs/vanilla-utils/subscribable/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -19,11 +19,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/native-utils/containers",
-        "main": "libs/native-utils/containers/src/index.ts",
-        "tsConfig": "libs/native-utils/containers/tsconfig.lib.json",
+        "outputPath": "dist/libs/vanilla-utils/subscribable",
+        "main": "libs/vanilla-utils/subscribable/src/index.ts",
+        "tsConfig": "libs/vanilla-utils/subscribable/tsconfig.lib.json",
         "assets": [
-          "libs/native-utils/containers/*.md"
+          "libs/vanilla-utils/subscribable/*.md"
         ]
       }
     },

@@ -1,7 +1,7 @@
 {
-  "name": "native-utils-subscribable",
+  "name": "vanilla-utils-session",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/native-utils/subscribable/src",
+  "sourceRoot": "libs/vanilla-utils/session/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -19,11 +19,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/native-utils/subscribable",
-        "main": "libs/native-utils/subscribable/src/index.ts",
-        "tsConfig": "libs/native-utils/subscribable/tsconfig.lib.json",
+        "outputPath": "dist/libs/vanilla-utils/session",
+        "main": "libs/vanilla-utils/session/src/index.ts",
+        "tsConfig": "libs/vanilla-utils/session/tsconfig.lib.json",
         "assets": [
-          "libs/native-utils/subscribable/*.md"
+          "libs/vanilla-utils/session/*.md"
         ]
       }
     },

@@ -1,7 +1,7 @@
 {
-  "name": "native-utils-session",
+  "name": "vanilla-utils-safe-await",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/native-utils/session/src",
+  "sourceRoot": "libs/vanilla-utils/safe-await/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -19,11 +19,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/native-utils/session",
-        "main": "libs/native-utils/session/src/index.ts",
-        "tsConfig": "libs/native-utils/session/tsconfig.lib.json",
+        "outputPath": "dist/libs/vanilla-utils/safe-await",
+        "main": "libs/vanilla-utils/safe-await/src/index.ts",
+        "tsConfig": "libs/vanilla-utils/safe-await/tsconfig.lib.json",
         "assets": [
-          "libs/native-utils/session/*.md"
+          "libs/vanilla-utils/safe-await/*.md"
         ]
       }
     },

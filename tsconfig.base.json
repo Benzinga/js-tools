@@ -25,34 +25,34 @@
     "baseUrl": ".",
     "paths": {
       "@benzinga/containers": [
-        "libs/native-utils/containers/src/index.ts"
+        "libs/vanilla-utils/containers/src/index.ts"
       ],
       "@benzinga/helper-functions": [
-        "libs/native-utils/helper-functions/src/index.ts"
+        "libs/vanilla-utils/helper-functions/src/index.ts"
       ],
       "@benzinga/iter": [
-        "libs/native-utils/iter/src/index.ts"
+        "libs/vanilla-utils/iter/src/index.ts"
       ],
       "@benzinga/logging-manager": [
         "libs/managers/logging/src/index.ts"
       ],
       "@benzinga/restful-client": [
-        "libs/native-utils/restful-client/src/index.ts"
+        "libs/vanilla-utils/restful-client/src/index.ts"
       ],
       "@benzinga/safe-await": [
-        "libs/native-utils/safe-await/src/index.ts"
+        "libs/vanilla-utils/safe-await/src/index.ts"
       ],
       "@benzinga/session": [
-        "libs/native-utils/session/src/index.ts"
+        "libs/vanilla-utils/session/src/index.ts"
       ],
       "@benzinga/session-context": [
         "libs/react-utils/session-context/src/index.ts"
       ],
       "@benzinga/socket-client": [
-        "libs/native-utils/socket-client/src/index.ts"
+        "libs/vanilla-utils/socket-client/src/index.ts"
       ],
       "@benzinga/subscribable": [
-        "libs/native-utils/subscribable/src/index.ts"
+        "libs/vanilla-utils/subscribable/src/index.ts"
       ],
       "@benzinga/useSubscribable": [
         "libs/react-utils/use-subscribable/src/index.ts"

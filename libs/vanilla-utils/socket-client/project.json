@@ -1,7 +1,7 @@
 {
-  "name": "native-utils-socket-client",
+  "name": "vanilla-utils-socket-client",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/native-utils/socket-client/src",
+  "sourceRoot": "libs/vanilla-utils/socket-client/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -19,11 +19,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/native-utils/socket-client",
-        "main": "libs/native-utils/socket-client/src/index.ts",
-        "tsConfig": "libs/native-utils/socket-client/tsconfig.lib.json",
+        "outputPath": "dist/libs/vanilla-utils/socket-client",
+        "main": "libs/vanilla-utils/socket-client/src/index.ts",
+        "tsConfig": "libs/vanilla-utils/socket-client/tsconfig.lib.json",
         "assets": [
-          "libs/native-utils/socket-client/*.md"
+          "libs/vanilla-utils/socket-client/*.md"
         ]
       }
     },

@@ -17,12 +17,12 @@ if (swcJestConfig.swcrc === undefined) {
 // swcJestConfig.module.noInterop = false;
 
 export default {
-  displayName: 'native-utils-containers',
+  displayName: 'vanilla-utils-helper-functions',
   preset: '../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   testEnvironment: 'node',
-  coverageDirectory: '../../../coverage/libs/native-utils/containers',
+  coverageDirectory: '../../../coverage/libs/vanilla-utils/helper-functions',
 };

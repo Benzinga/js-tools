@@ -17,12 +17,12 @@ if (swcJestConfig.swcrc === undefined) {
 // swcJestConfig.module.noInterop = false;
 
 export default {
-  displayName: 'native-utils-session',
+  displayName: 'vanilla-utils-subscribable',
   preset: '../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   testEnvironment: 'node',
-  coverageDirectory: '../../../coverage/libs/native-utils/session',
+  coverageDirectory: '../../../coverage/libs/vanilla-utils/subscribable',
 };
