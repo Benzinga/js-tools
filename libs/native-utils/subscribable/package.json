@@ -1,6 +1,6 @@
 {
   "name": "@benzinga/subscribable",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "dependencies": {
     "@swc/helpers": "~0.5.11"
   },
