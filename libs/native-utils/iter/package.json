@@ -1,5 +1,8 @@
 {
   "name": "@benzinga/iter",
+  "author": "Ashir Basu",
+  "homepage": "https://github.com/Benzinga/js-tools",
+  "license": "MIT",
   "version": "1.0.0",
   "dependencies": {
     "@swc/helpers": "~0.5.11"

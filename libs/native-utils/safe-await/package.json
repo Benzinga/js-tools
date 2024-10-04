@@ -1,5 +1,8 @@
 {
   "name": "@benzinga/safe-await",
+  "author": "Zaid Nackasha <znackasha@gmail.com> (https://github.com/ZNackasha)",
+  "homepage": "https://github.com/Benzinga/js-tools",
+  "license": "MIT",
   "version": "1.0.0",
   "dependencies": {
     "@swc/helpers": "~0.5.11"

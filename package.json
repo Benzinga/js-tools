@@ -1,5 +1,7 @@
 {
   "name": "@web/source",
+  "author": "Zaid Nackasha <znackasha@gmail.com> (https://github.com/ZNackasha)",
+  "homepage": "https://github.com/Benzinga/js-tools",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
