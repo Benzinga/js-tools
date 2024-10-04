@@ -1,5 +1,5 @@
 import { genHeaders, SafePromise } from '@benzinga/safe-await';
-import { Session } from '../../session/src/session';
+import { Session } from '@benzinga/session';
 import {
   addParamsToURL,
   DataRequestInit,

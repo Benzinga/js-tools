@@ -21,7 +21,6 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
-    "strictBuiltinIteratorReturn": true,
     "alwaysStrict": true,
     "baseUrl": ".",
     "paths": {
@@ -30,6 +29,9 @@
       ],
       "@benzinga/helper-functions": [
         "libs/native-utils/helper-functions/src/index.ts"
+      ],
+      "@benzinga/iter": [
+        "libs/native-utils/iter/src/index.ts"
       ],
       "@benzinga/logging-manager": [
         "libs/managers/logging/src/index.ts"
