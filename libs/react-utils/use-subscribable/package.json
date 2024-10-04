@@ -3,6 +3,10 @@
   "author": "Zaid Nackasha <znackasha@gmail.com> (https://github.com/ZNackasha)",
   "homepage": "https://github.com/Benzinga/js-tools",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false,
   "version": "1.0.0",
   "main": "./index.js",
   "types": "./index.d.ts",
