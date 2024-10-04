@@ -9,8 +9,11 @@
   },
   "private": false,
   "scripts": {
+    "build": "nx build",
+    "build:all": "nx run-many --target=build --all",
     "start": "nx serve",
-    "reset": "nx reset"
+    "reset": "nx reset",
+    "publish:all": "node ./scripts/publish_all.js"
   },
   "dependencies": {
     "react": "18.3.1",
