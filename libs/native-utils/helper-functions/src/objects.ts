@@ -51,7 +51,7 @@ export const removeKeysFromObject = <T extends Partial<Record<keyof T, unknown>>
 export const updateObjects = <T extends Partial<Record<keyof T, unknown>>>(...objects: T[]): T =>
   objects.reduce((prev, obj) => {
     Object.keys(obj).forEach(key => {
-      prev[key] = obj[key];
+      prev[key as keyof T] = obj[key as keyof T];
     });
 
     return prev;

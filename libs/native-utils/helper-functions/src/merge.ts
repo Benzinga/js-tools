@@ -4,10 +4,10 @@ import { RecursivePartial } from './typescript';
 export const deepMerge = <T extends object>(...objects: RecursivePartial<T>[]): T => {
   const [first, ...rest] = objects;
   return rest.reduce(
-    (prev, obj) => {
+    (prev: Record<string, unknown>, obj) => {
       Object.keys(obj).forEach(key => {
         const pVal = prev[key];
-        const oVal = obj[key];
+        const oVal = (obj as Record<string, unknown>)[key];
         if (isArray(pVal) && isArray(oVal)) {
           prev[key] = pVal;
         } else if (isObject(pVal) && isObject(oVal)) {
@@ -26,10 +26,10 @@ export const deepMerge = <T extends object>(...objects: RecursivePartial<T>[]): 
 export const deepArrayMerge = <T extends object>(...objects: RecursivePartial<T>[]): T => {
   const [first, ...rest] = objects;
   return rest.reduce(
-    (prev, obj) => {
+    (prev: Record<string, unknown>, obj) => {
       Object.keys(obj).forEach(key => {
         const pVal = prev[key];
-        const oVal = obj[key];
+        const oVal = (obj as Record<string, unknown>)[key];
 
         if (isArray(pVal) && isArray(oVal)) {
           prev[key] = pVal.concat(...oVal);
