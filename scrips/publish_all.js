@@ -18,11 +18,29 @@ function findPackageJson(dir) {
 	return packageDirs;
 }
 
+const parentDir = path.resolve(__dirname, '..');
+console.log(`Parent directory: ${parentDir}`);
+
+function moveReadme(srcDir, distDir) {
+	const readmeFile = 'README.md';
+	const srcPath = path.join(srcDir, readmeFile);
+	const distPath = path.join(distDir, readmeFile);
+
+	if (fs.existsSync(srcPath)) {
+		fs.copyFileSync(srcPath, distPath);
+		console.log(`Moved ${readmeFile} from ${srcDir} to ${distDir}`);
+	} else {
+		console.error(`No ${readmeFile} found in ${srcDir}`);
+	}
+}
+
 function publishProjects(dir) {
 	const projectPaths = findPackageJson(dir);
+	console.log(`Found package.json in ${projectPaths.length} directories in ${dir}`);
 	if (projectPaths.length > 0) {
 		projectPaths.forEach(projectPath => {
 			console.log(`Publishing ${projectPath}...`);
+			moveReadme(projectPath.replace(path.join(parentDir, 'dist'), parentDir), projectPath);
 			exec(`npm publish`, { cwd: projectPath }, (err, stdout, stderr) => {
 				if (err) {
 					console.error(`Error publishing ${projectPath}: ${err.message}`);
