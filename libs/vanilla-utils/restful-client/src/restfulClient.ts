@@ -1,5 +1,4 @@
 import { genHeaders, SafePromise } from '@benzinga/safe-await';
-import { Session } from '@benzinga/session';
 import {
   addParamsToURL,
   DataRequestInit,
@@ -19,17 +18,14 @@ export interface RestfulClientOptionalParams {
 
 export class RestfulClient {
   protected hostname: URL;
-  protected session: Session;
   protected givenInitFetch?: (init: DataRequestInit) => SafePromise<DataRequestInit>
   private debouncedGetRequest = new Map<string, SafePromise<unknown>>();
 
   constructor(
     hostname: URL,
-    session: Session,
     initFetch?: (init: DataRequestInit) => SafePromise<DataRequestInit>
   ) {
     this.hostname = hostname;
-    this.session = session;
     this.givenInitFetch = initFetch;
   }
 
