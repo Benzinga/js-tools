@@ -13,7 +13,8 @@
     "build:all": "nx run-many --target=build --all",
     "start": "nx serve",
     "reset": "nx reset",
-    "publish:all": "node ./scripts/publish_all.js"
+    "publish:all": "node ./scripts/publish_all.js",
+    "build-and-publish": "npm run build:all && npm run publish:all"
   },
   "dependencies": {
     "react": "18.3.1",

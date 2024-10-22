@@ -54,7 +54,7 @@
       "@benzinga/subscribable": [
         "libs/vanilla-utils/subscribable/src/index.ts"
       ],
-      "@benzinga/useSubscribable": [
+      "@benzinga/use-subscribable": [
         "libs/react-utils/use-subscribable/src/index.ts"
       ],
       "@benzinga/widget-tools": [
