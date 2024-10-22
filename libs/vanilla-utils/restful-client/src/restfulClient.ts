@@ -16,20 +16,20 @@ export interface RestfulClientOptionalParams {
   tokenParameterName?: string;
 }
 
-export class RestfulClient {
+export class RestfulClient<DATA_REQUEST_INIT extends DataRequestInit = DataRequestInit> {
   protected hostname: URL;
-  protected givenInitFetch?: (init: DataRequestInit) => SafePromise<DataRequestInit>
+  protected givenInitFetch?: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
   private debouncedGetRequest = new Map<string, SafePromise<unknown>>();
 
   constructor(
     hostname: URL,
-    initFetch?: (init: DataRequestInit) => SafePromise<DataRequestInit>
+    initFetch?: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
   ) {
     this.hostname = hostname;
     this.givenInitFetch = initFetch;
   }
 
-  protected initFetch = async (init: DataRequestInit): SafePromise<DataRequestInit> => {
+  protected initFetch = async (init: Partial<DATA_REQUEST_INIT>): SafePromise<Partial<DATA_REQUEST_INIT>> => {
     if (this.givenInitFetch) {
       return this.givenInitFetch(init);
     } else {
@@ -43,11 +43,11 @@ export class RestfulClient {
     return addParamsToURL(url, actualParams);
   };
 
-  public jsonFetch = <T>(input: RequestInfo, init: Partial<DataRequestInit> = {}): SafePromise<T> => {
-    return safeJsonDataFetch<T>(input, init, this.initFetch);
+  public jsonFetch = <T>(input: RequestInfo, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<T> => {
+    return safeJsonDataFetch<T, DATA_REQUEST_INIT>(input, init, this.initFetch);
   };
 
-  public fetch = (input: RequestInfo, init: Partial<DataRequestInit> = {}): SafePromise<Response> => {
+  public fetch = (input: RequestInfo, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<Response> => {
     return safeDataFetch(input, init, this.initFetch);
   };
 
@@ -55,12 +55,12 @@ export class RestfulClient {
     return window.navigator.sendBeacon(input.toString(), JSON.stringify(data));
   };
 
-  public get = <T>(input: URL, init: Partial<DataRequestInit> = {}): SafePromise<T> => {
+  public get = <T>(input: URL, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<T> => {
     init.method = 'GET';
     return this.jsonFetch(input.toString(), init);
   };
 
-  public getProtoBuf = (input: URL, init: Partial<DataRequestInit> = {}): SafePromise<Response> => {
+  public getProtoBuf = (input: URL, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<Response> => {
     init.method = 'GET';
 
     init.headers = genHeaders(init.headers);
@@ -69,12 +69,12 @@ export class RestfulClient {
     return this.fetch(input.toString(), init);
   };
 
-  public getRaw = (input: URL, init: Partial<DataRequestInit> = {}): SafePromise<Response> => {
+  public getRaw = (input: URL, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<Response> => {
     init.method = 'GET';
     return this.fetch(input.toString(), init);
   };
 
-  public debouncedGet = async <T>(input: URL, init: Partial<DataRequestInit> = {}): SafePromise<T> => {
+  public debouncedGet = async <T>(input: URL, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<T> => {
     init.method = 'GET';
     const url = input.toString();
     if (this.debouncedGetRequest.has(url)) {
@@ -88,13 +88,13 @@ export class RestfulClient {
     }
   };
 
-  public debouncedGetWithNoContent = async <T>(input: URL, init: Partial<DataRequestInit> = {}): SafePromise<T> => {
+  public debouncedGetWithNoContent = async <T>(input: URL, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<T> => {
     init.method = 'GET';
     const url = input.toString();
     if (this.debouncedGetRequest.has(url)) {
       return this.debouncedGetRequest.get(url) as SafePromise<T>;
     } else {
-      const response = safeDataFetchWithNoContent<T>(input.toString(), init, this.initFetch);
+      const response = safeDataFetchWithNoContent<T, DATA_REQUEST_INIT>(input.toString(), init, this.initFetch);
       this.debouncedGetRequest.set(url, response);
       await response;
       this.debouncedGetRequest.delete(url);
@@ -103,7 +103,7 @@ export class RestfulClient {
   };
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  public post = <T, BODY>(input: URL, body?: BODY, init: Partial<DataRequestInit> = {}): SafePromise<T> => {
+  public post = <T, BODY>(input: URL, body?: BODY, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<T> => {
     init.method = 'POST';
     if (body !== undefined) {
       init.body = JSON.stringify(body);
@@ -112,7 +112,7 @@ export class RestfulClient {
   };
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  public put = <T, BODY>(input: URL, body?: BODY, init: Partial<DataRequestInit> = {}): SafePromise<T> => {
+  public put = <T, BODY>(input: URL, body?: BODY, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<T> => {
     init.method = 'PUT';
     if (body !== undefined) {
       init.body = JSON.stringify(body);
@@ -124,7 +124,7 @@ export class RestfulClient {
   public patch = <T, BODY extends object>(
     input: URL,
     body?: BODY,
-    init: Partial<DataRequestInit> = {},
+    init: Partial<DATA_REQUEST_INIT> = {},
   ): SafePromise<T> => {
     init.method = 'PATCH';
     if (body !== undefined) {
@@ -133,7 +133,7 @@ export class RestfulClient {
     return this.jsonFetch(input.toString(), init);
   };
 
-  public delete = (input: URL, init: Partial<DataRequestInit> = {}): SafePromise<Response> => {
+  public delete = (input: URL, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<Response> => {
     init.method = 'DELETE';
     return this.fetch(input.toString(), init);
   };

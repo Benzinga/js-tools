@@ -80,7 +80,11 @@ export const extendPathname = (url: URL, pathname: string): URL => {
   return new URL(pathname, url);
 };
 
-export const safeJsonDataFetch = async <T>(input: RequestInfo, init: DataRequestInit, initFetch: (init: DataRequestInit) => SafePromise<DataRequestInit>): SafePromise<T> => {
+export const safeJsonDataFetch = async <T, DATA_REQUEST_INIT extends DataRequestInit = DataRequestInit>(
+  input: RequestInfo,
+  init: Partial<DATA_REQUEST_INIT>,
+  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
+): SafePromise<T> => {
   const initializedConfig = await initFetch(init);
   if (initializedConfig.err) {
     return initializedConfig as SafeType<T>;
@@ -92,7 +96,11 @@ export const safeJsonDataFetch = async <T>(input: RequestInfo, init: DataRequest
   }
 };
 
-export const safeDataFetchWithNoContent = async <T>(input: RequestInfo, init: DataRequestInit, initFetch: (init: DataRequestInit) => SafePromise<DataRequestInit>): SafePromise<T> => {
+export const safeDataFetchWithNoContent = async <T, DATA_REQUEST_INIT extends DataRequestInit = DataRequestInit>(
+  input: RequestInfo,
+  init: Partial<DATA_REQUEST_INIT>,
+  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
+): SafePromise<T> => {
   const initializedConfig = await initFetch(init);
   if (initializedConfig.err) {
     return initializedConfig as SafeType<T>;
@@ -104,7 +112,11 @@ export const safeDataFetchWithNoContent = async <T>(input: RequestInfo, init: Da
   }
 };
 
-export const safeDataFetch = async (input: RequestInfo, init: DataRequestInit, initFetch: (init: DataRequestInit) => SafePromise<DataRequestInit>): SafePromise<Response> => {
+export const safeDataFetch = async <DATA_REQUEST_INIT extends DataRequestInit = DataRequestInit>(
+  input: RequestInfo,
+  init: Partial<DATA_REQUEST_INIT>,
+  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
+): SafePromise<Response> => {
   const initializedConfig = await initFetch(init);
   if (initializedConfig.err) {
     return initializedConfig as SafeType<Response>;
