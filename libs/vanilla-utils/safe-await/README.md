@@ -29,7 +29,7 @@ else {
 As you can see all we are doing here is wrapping fetch with the `safeAwait` function which does the following:
 
 ```ts
-export type SafePromise<T> = Promise<[null | Error, T | undefined]>
+export type SafePromise<T> = Promise<{ err: Error; ok: undefined } | { err: undefined; ok: T}>
 
 export const safeAwait = async <T>(promise: Promise<T>): SafePromise<T> => {
   try {
