@@ -1,15 +1,3 @@
-
-import SubscribableSocket, { SubscribableSocketEvent } from './socket';
-import SubscribableReconnectingSocket, { SubscribableReconnectingSocketEvent } from './reconnectingSocket';
-import { SubscribableSleepWakeUp } from './wakeUp';
-
-export {
-  SubscribableSocket,
-  SubscribableSleepWakeUp,
-  SubscribableReconnectingSocket,
-};
-
-export type {
-  SubscribableSocketEvent,
-  SubscribableReconnectingSocketEvent,
-};
+export * from './socket';
+export * from './reconnectingSocket';
+export * from './wakeUp';

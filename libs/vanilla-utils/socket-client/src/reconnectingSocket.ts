@@ -1,4 +1,4 @@
-import SubscribableSocket, { SocketState, SubscribableSocketEvent, WebSocketProps } from './socket';
+import { SubscribableSocket, SocketState, SubscribableSocketEvent, WebSocketProps } from './socket';
 import { ExtendedSubscribable, SubscribableEvent, Subscription } from '@benzinga/subscribable';
 import { SubscribableSleepWakeUp } from './wakeUp';
 interface SocketDisconnectEvent extends SubscribableEvent<'disconnected'> {
@@ -25,20 +25,20 @@ interface ReconnectingSocketFunctions {
   sendObject: SubscribableReconnectingSocket['sendObject'];
 }
 
-class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> extends ExtendedSubscribable<
+export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> extends ExtendedSubscribable<
   SubscribableReconnectingSocketEvent<RESPFormat>,
   ReconnectingSocketFunctions
 > {
   private socket: SubscribableSocket<RESPFormat, REQFormat>;
   private socketSubscription?: Subscription<SubscribableSocket<RESPFormat>>;
-  private sleepWakeUp: SubscribableSleepWakeUp;
+  private readonly sleepWakeUp: SubscribableSleepWakeUp;
   private sleepWakeUpSubscription?: Subscription<SubscribableSleepWakeUp>;
   private disconnectTime?: Date;
   private forceReconnect = false;
-  private webSocketProps: WebSocketProps;
-  private url: URL;
+  private readonly webSocketProps: WebSocketProps;
+  private readonly url: URL;
   private state: ReconnectSocketState = 'closed';
-  private getTimeoutLength?: (disconnectTime: Date) => number;
+  private readonly getTimeoutLength?: (disconnectTime: Date) => number;
 
   constructor(url: URL, webSocketProps?: WebSocketProps, getTimeoutLength?: (disconnectTime: Date) => number) {
     super();
@@ -50,7 +50,7 @@ class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> 
     this.getTimeoutLength = getTimeoutLength;
   }
 
-  private static getTimeoutLength = (disconnectTime: Date): number => {
+  private static getTimeoutLength(disconnectTime: Date): number {
     const timeDelta = new Date().getTime() - disconnectTime.getTime();
     if (timeDelta > 10000) {
       return 10000;
@@ -59,9 +59,9 @@ class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> 
     } else {
       return timeDelta;
     }
-  };
+  }
 
-  public open = (): void => {
+  public open(): void {
     if (this.state === 'closing') {
       this.socketSubscription?.unsubscribe();
       this.socketSubscription = undefined;
@@ -76,9 +76,9 @@ class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> 
       this.socket.open();
       this.sleepWakeUpSubscription = this.sleepWakeUp.subscribe(() => this.reconnect());
     }
-  };
+  }
 
-  public reconnect = (): void => {
+  public reconnect(): void {
     if (this.forceReconnect === false) {
       this.forceReconnect = true;
       const socketState = this.socket.getState();
@@ -89,35 +89,41 @@ class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> 
         this.timedReconnect();
       }
     }
-  };
+  }
 
-  public send = (data: string | ArrayBuffer | ArrayBufferView | Blob): void => {
+  public send(data: string | ArrayBuffer | ArrayBufferView | Blob): void {
     this.socket.send(data);
-  };
+  }
 
   public sendObject = <T = REQFormat>(data: T): void => {
     this.socket.sendObject(data);
   };
 
-  public close = (): void => {
+  public close(): void {
     this.socket.close();
     this.sleepWakeUpSubscription?.unsubscribe();
     this.sleepWakeUpSubscription = undefined;
-  };
+  }
 
-  public getState = (): ReconnectSocketState => this.state;
+  public getState(): ReconnectSocketState {
+    return this.state;
+  }
 
-  protected onSubscribe = (): ReconnectingSocketFunctions => ({
-    close: this.close,
-    open: this.open,
-    reconnect: this.reconnect,
-    send: this.send,
-    sendObject: this.sendObject,
-  });
+  protected onSubscribe(): ReconnectingSocketFunctions {
+    return {
+      close: this.close,
+      open: this.open,
+      reconnect: this.reconnect,
+      send: this.send,
+      sendObject: this.sendObject,
+    };
+  }
 
-  protected override onZeroSubscriptions = (): void => this.close();
+  protected override onZeroSubscriptions(): void {
+    this.close();
+  }
 
-  private onMessage = (event: SubscribableSocketEvent<RESPFormat>) => {
+  private onMessage(event: SubscribableSocketEvent<RESPFormat>) {
     switch (event.type) {
       case 'close':
         if (event.event.wasClean && this.forceReconnect === false) {
@@ -152,9 +158,9 @@ class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> 
         this.dispatch(event);
         break;
     }
-  };
+  }
 
-  private timedReconnect = () => {
+  private timedReconnect() {
     this.socket.close();
     if (this.disconnectTime === undefined) {
       this.disconnectTime = new Date();
@@ -166,7 +172,5 @@ class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> 
         this.socket.open();
       }, getTimeoutLength(this.disconnectTime));
     }
-  };
+  }
 }
-
-export default SubscribableReconnectingSocket;

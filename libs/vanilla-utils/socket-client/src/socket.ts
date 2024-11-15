@@ -16,13 +16,18 @@ interface SocketCloseEvent extends SubscribableEvent<'close'> {
   event: CloseEvent;
 }
 
+interface UrlUpdateEvent extends SubscribableEvent<'url-update'> {
+  url: URL;
+}
+
 export type SubscribableSocketEvent<RESPFormat> =
   | SocketCloseEvent
   | SocketErrorEvent
   | SocketRequestEvent
   | SocketResponseEvent<RESPFormat>
   | SubscribableEvent<'open'>
-  | SubscribableEvent<'closing'>;
+  | SubscribableEvent<'closing'>
+  | UrlUpdateEvent;
 
 export type SocketState = 'closed' | 'closing' | 'open' | 'opening';
 
@@ -35,14 +40,14 @@ interface SocketFunctions {
   sendObject: SubscribableSocket['sendObject'];
 }
 
-class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends ExtendedSubscribable<
+export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends ExtendedSubscribable<
   SubscribableSocketEvent<RESPFormat>,
   SocketFunctions
 > {
   private socket?: WebSocket;
   private url: URL;
   private state: SocketState;
-  private webSocketProps: WebSocketProps;
+  private readonly webSocketProps: WebSocketProps;
   private queueSend: (string | ArrayBuffer | ArrayBufferView | Blob)[] = [];
   private socketsOpened: WebSocket[] = [];
 
@@ -53,7 +58,7 @@ class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends Exte
     this.state = 'closed';
   }
 
-  public open = async (): Promise<void> => {
+  public async open(): Promise<void> {
     if (this.socket === undefined && this.state !== 'opening') {
       this.state = 'opening';
       const socket = await safeResilient(
@@ -117,18 +122,18 @@ class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends Exte
         this.dispatch({ type: 'open' });
       }
     }
-  };
+  }
 
-  public close = (): void => {
+  public close(): void {
     this.close_internal();
     this.queueSend = [];
-  };
+  }
 
-  public sendObject = <T = REQFormat>(data: T): void => {
+  public sendObject<T = REQFormat>(data: T): void {
     this.send(JSON.stringify(data));
-  };
+  }
 
-  public send = (data: string | ArrayBuffer | ArrayBufferView | Blob): void => {
+  public send(data: string | ArrayBuffer | ArrayBufferView | Blob): void {
     switch (this.state) {
       case 'opening':
         this.queueSend.push(data);
@@ -145,11 +150,13 @@ class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends Exte
         console.log('cannot send data if socket is not open');
         break;
     }
-  };
+  }
 
-  public getState = (): SocketState => this.state;
+  public getState(): SocketState {
+    return this.state;
+  }
 
-  protected close_internal = (): void => {
+  protected close_internal(): void {
     switch (this.state) {
       case 'open': {
         try {
@@ -173,18 +180,18 @@ class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends Exte
       }
     }
     this.socket = undefined;
-  };
+  }
 
-  protected override onSubscribe = (): SocketFunctions => ({
-    close: this.close,
-    open: this.open,
-    send: this.send,
-    sendObject: this.sendObject,
-  });
+  protected override onSubscribe(): SocketFunctions {
+    return {
+      close: this.close,
+      open: this.open,
+      send: this.send,
+      sendObject: this.sendObject,
+    };
+  }
 
-  protected override onZeroSubscriptions = (): void => {
+  protected override onZeroSubscriptions(): void {
     this.close();
-  };
+  }
 }
-
-export default SubscribableSocket;
