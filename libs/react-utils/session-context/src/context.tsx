@@ -17,4 +17,4 @@ export const SessionContextProvider: React.FC<React.PropsWithChildren<SessionPro
 
 export const useSession = (): Session => {
   return React.useContext(SessionContext);
-}
+};
