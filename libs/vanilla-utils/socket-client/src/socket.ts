@@ -114,7 +114,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
               };
             }),
           ),
-        { delayOffset: 100, delayMultiple: 500, maxDelay: 10000 },
+        { delayOffset: 1000, delayMultiple: 1000, maxDelay: 30000 },
       )();
 
       if (socket.ok) {
