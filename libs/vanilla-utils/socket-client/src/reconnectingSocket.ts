@@ -33,7 +33,6 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
   private socketSubscription?: Subscription<SubscribableSocket<RESPFormat>>;
   private readonly sleepWakeUp: SubscribableSleepWakeUp;
   private sleepWakeUpSubscription?: Subscription<SubscribableSleepWakeUp>;
-  private forceReconnect = false;
   private readonly webSocketProps: WebSocketProps;
   private readonly url: URL;
   private state: ReconnectSocketState = 'closed';
@@ -114,7 +113,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
   private onMessage(event: SubscribableSocketEvent<RESPFormat>) {
     switch (event.type) {
       case 'close':
-        if (event.event.wasClean && this.forceReconnect === false) {
+        if (event.event.wasClean) {
           this.state = 'closed';
           this.dispatch(event);
           this.socketSubscription?.unsubscribe();
@@ -122,7 +121,6 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
         } else {
           this.state = 'disconnected';
           this.dispatch({ errorEvent: event.event, type: 'disconnected' });
-          this.forceReconnect = false;
 
           if (this.state === 'disconnected') {
             this.state = 'reconnecting';
