@@ -45,7 +45,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
   SocketFunctions
 > {
   private socket?: WebSocket;
-  private url: URL;
+  private readonly url: URL;
   private state: SocketState;
   private readonly webSocketProps: WebSocketProps;
   private queueSend: (string | ArrayBuffer | ArrayBufferView | Blob)[] = [];
@@ -63,8 +63,12 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
       this.state = 'opening';
       const socket = await safeResilient(
         () =>
-          safeAwait<WebSocket>(
-            new Promise(resolve => {
+          safeAwait<WebSocket | null>(
+            new Promise((resolve, reject) => {
+              if (this.state !== 'opening') {
+                reject(new SafeError('connection closed while opening', 'socket'));
+                return;
+              }
               const socket = new WebSocket(this.url.toString());
               socket.binaryType = this.webSocketProps.binaryType ?? 'blob';
               this.socketsOpened.push(socket);
@@ -110,7 +114,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
               };
             }),
           ),
-        { delayOffset: 10000 },
+        { delayOffset: 100, delayMultiple: 500, maxDelay: 10000 },
       )();
 
       if (socket.ok) {
@@ -147,6 +151,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
         this.dispatch({ msg: data, type: 'request' });
         break;
       case 'closed':
+      case 'closing':
         console.log('cannot send data if socket is not open');
         break;
     }

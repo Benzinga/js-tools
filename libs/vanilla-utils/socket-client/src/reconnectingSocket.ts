@@ -33,42 +33,27 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
   private socketSubscription?: Subscription<SubscribableSocket<RESPFormat>>;
   private readonly sleepWakeUp: SubscribableSleepWakeUp;
   private sleepWakeUpSubscription?: Subscription<SubscribableSleepWakeUp>;
-  private disconnectTime?: Date;
   private forceReconnect = false;
   private readonly webSocketProps: WebSocketProps;
   private readonly url: URL;
   private state: ReconnectSocketState = 'closed';
-  private readonly getTimeoutLength?: (disconnectTime: Date) => number;
 
-  constructor(url: URL, webSocketProps?: WebSocketProps, getTimeoutLength?: (disconnectTime: Date) => number) {
+  constructor(url: URL, webSocketProps?: WebSocketProps) {
     super();
     this.url = url;
     this.webSocketProps = webSocketProps ?? {};
     this.socket = new SubscribableSocket(url, webSocketProps);
     this.sleepWakeUp = new SubscribableSleepWakeUp();
-    this.disconnectTime = undefined;
-    this.getTimeoutLength = getTimeoutLength;
-  }
-
-  private static getTimeoutLength(disconnectTime: Date): number {
-    const timeDelta = new Date().getTime() - disconnectTime.getTime();
-    if (timeDelta > 10000) {
-      return 10000;
-    } else if (timeDelta < 100) {
-      return 100;
-    } else {
-      return timeDelta;
-    }
   }
 
   public open(): void {
     if (this.state === 'closing') {
       this.socketSubscription?.unsubscribe();
       this.socketSubscription = undefined;
+      // we create a new socket because we dont know when the close event will be fired
       this.socket = new SubscribableSocket(this.url, this.webSocketProps);
     }
     if (this.state === 'closed' || this.state === 'closing') {
-      this.disconnectTime = undefined;
       if (this.socketSubscription === undefined) {
         this.socketSubscription = this.socket.subscribe(this.onMessage);
       }
@@ -79,16 +64,18 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
   }
 
   public reconnect(): void {
-    if (this.forceReconnect === false) {
-      this.forceReconnect = true;
-      const socketState = this.socket.getState();
-      this.socket.close();
-      if (socketState == 'opening') {
-        this.state = 'reconnecting';
-        this.dispatch({ type: 'reconnecting' });
-        this.timedReconnect();
-      }
+    this.state = 'reconnecting';
+    if (this.sleepWakeUpSubscription == null) {
+      this.sleepWakeUpSubscription = this.sleepWakeUp.subscribe(() => this.reconnect());
     }
+    this.dispatch({ type: 'reconnecting' });
+    this.socketSubscription?.unsubscribe();
+    this.socketSubscription = undefined;
+    this.socket.close();
+    // we create a new socket because we dont know when the close event will be fired
+    this.socket = new SubscribableSocket(this.url, this.webSocketProps);
+    this.socketSubscription = this.socket.subscribe(this.onMessage);
+    this.socket.open();
   }
 
   public send(data: string | ArrayBuffer | ArrayBufferView | Blob): void {
@@ -101,6 +88,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
 
   public close(): void {
     this.socket.close();
+    this.state = this.socket.getState();
     this.sleepWakeUpSubscription?.unsubscribe();
     this.sleepWakeUpSubscription = undefined;
   }
@@ -132,22 +120,23 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
           this.socketSubscription?.unsubscribe();
           this.socketSubscription = undefined;
         } else {
-          if (this.disconnectTime === undefined || this.forceReconnect) {
-            this.state = 'disconnected';
-            this.dispatch({ errorEvent: event.event, type: 'disconnected' });
-            this.forceReconnect = false;
+          this.state = 'disconnected';
+          this.dispatch({ errorEvent: event.event, type: 'disconnected' });
+          this.forceReconnect = false;
+
+          if (this.state === 'disconnected') {
+            this.state = 'reconnecting';
+            this.dispatch({ errorEvent: event.event, type: 'reconnecting' });
+            this.socket.open();
           }
-          this.state = 'reconnecting';
-          this.dispatch({ errorEvent: event.event, type: 'reconnecting' });
-          this.timedReconnect();
         }
         break;
       case 'open':
-        this.state = 'open';
-        if (this.disconnectTime) {
-          this.disconnectTime = undefined;
+        if (this.state === 'reconnecting') {
+          this.state = 'open';
           this.dispatch({ type: 'reconnected' });
         } else {
+          this.state = 'open';
           this.dispatch(event);
         }
         break;
@@ -157,20 +146,6 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
       default:
         this.dispatch(event);
         break;
-    }
-  }
-
-  private timedReconnect() {
-    this.socket.close();
-    if (this.disconnectTime === undefined) {
-      this.disconnectTime = new Date();
-      this.socket.open();
-    } else {
-      const getTimeoutLength = this.getTimeoutLength ?? SubscribableReconnectingSocket.getTimeoutLength;
-
-      setTimeout(() => {
-        this.socket.open();
-      }, getTimeoutLength(this.disconnectTime));
     }
   }
 }
