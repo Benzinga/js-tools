@@ -4,8 +4,12 @@ export interface SubscribableEvent<EventType extends SubString<string>> {
   type: EventType;
 }
 
-export interface SubscriptionType<Events extends SubscribableEvent<string>, SubscriberArgs = unknown> {
-  unsubscribe: () => void;
+export interface SubscriptionType<
+  Events extends SubscribableEvent<string>,
+  SubscriberArgs = unknown,
+  UnsubscribeArgs = unknown,
+> {
+  unsubscribe: (args: UnsubscribeArgs) => void;
   update: (callback: (event: Events) => void, args?: SubscriberArgs) => void;
 }
 
@@ -13,9 +17,10 @@ export type SubscriptionExtendedType<
   Events extends SubscribableEvent<string>,
   Extension extends Record<keyof Extension, unknown> | undefined = undefined,
   SubscriberArgs = unknown,
+  UnsubscribeArgs = unknown,
 > = Extension extends undefined
-  ? SubscriptionType<Events, SubscriberArgs>
-  : SubscriptionType<Events, SubscriberArgs> & Extension;
+  ? SubscriptionType<Events, SubscriberArgs, UnsubscribeArgs>
+  : SubscriptionType<Events, SubscriberArgs, UnsubscribeArgs> & Extension;
 
 export type Subscription<T extends Subscribable<any, any>> = ReturnType<T['subscribe']>;
 
@@ -30,7 +35,11 @@ interface Subscriber<Events> {
 }
 
 // This is an inheritable class that makes the inheriting class subscribable.
-export abstract class Subscribable<Events extends SubscribableEvent<string>, SubscriberArgs = unknown> {
+export abstract class Subscribable<
+  Events extends SubscribableEvent<string>,
+  SubscriberArgs = unknown,
+  UnsubscribeArgs = unknown,
+> {
   private static logger?: (
     eventType: 'dispatch' | 'unsubscribe' | 'subscribe',
     subscribableName: string,
@@ -51,7 +60,7 @@ export abstract class Subscribable<Events extends SubscribableEvent<string>, Sub
     callback: (event: Events) => void,
     args?: SubscriberArgs,
     types?: Events['type'][],
-  ): SubscriptionType<Events, SubscriberArgs> {
+  ): SubscriptionType<Events, SubscriberArgs, UnsubscribeArgs> {
     const [id, base] = this._baseSubscribe(callback, args, types);
     this.onSubscribe(id, args);
     return base;
@@ -61,7 +70,7 @@ export abstract class Subscribable<Events extends SubscribableEvent<string>, Sub
     callback: (event: Events) => void,
     args?: SubscriberArgs,
     types?: Events['type'][],
-  ): [SubscriberId, SubscriptionType<Events, SubscriberArgs>] {
+  ): [SubscriberId, SubscriptionType<Events, SubscriberArgs, UnsubscribeArgs>] {
     const subscriber = {
       callback,
       id: Date.now() + Math.random(),
@@ -78,8 +87,8 @@ export abstract class Subscribable<Events extends SubscribableEvent<string>, Sub
     return [
       subscriber.id,
       {
-        unsubscribe: () => {
-          this.unsubscribe(subscriber.id);
+        unsubscribe: (args?: UnsubscribeArgs) => {
+          this.unsubscribe(subscriber.id, args);
         },
         update: (callback: (event: Events) => void, args?: SubscriberArgs) => {
           this.onUpdate(subscriber.id, args);
@@ -104,7 +113,7 @@ export abstract class Subscribable<Events extends SubscribableEvent<string>, Sub
   protected onUpdate(_id: SubscriberId, _args?: SubscriberArgs): void {
     return undefined;
   }
-  protected onUnsubscribe(_id: SubscriberId): void {
+  protected onUnsubscribe(_id: SubscriberId, _args?: UnsubscribeArgs): void {
     return undefined;
   }
 
@@ -131,10 +140,10 @@ export abstract class Subscribable<Events extends SubscribableEvent<string>, Sub
     }
   }
 
-  private unsubscribe(id: number): void {
+  private unsubscribe(id: number, args?: UnsubscribeArgs): void {
     Subscribable.logger?.('unsubscribe', this.subscribableName ?? this.constructor.name, id);
     this.subscribers.delete(id);
-    this.onUnsubscribe(id);
+    this.onUnsubscribe(id, args);
     if (this.subscribers.size === 0) {
       this.onZeroSubscriptions();
     }
@@ -144,7 +153,8 @@ export abstract class Subscribable<Events extends SubscribableEvent<string>, Sub
 export abstract class ListenableSubscribable<
   Events extends SubscribableEvent<string>,
   SubscriberArgs = unknown,
-> extends Subscribable<Events, SubscriberArgs> {
+  UnsubscribeArgs = unknown,
+> extends Subscribable<Events, SubscriberArgs, UnsubscribeArgs> {
   private readonly listeners = new Map<SubscriberId, Subscriber<Events>>();
 
   public override dispatch(event: Events, subscriberIds?: SubscriberId[]): void {
@@ -154,14 +164,17 @@ export abstract class ListenableSubscribable<
     return this._baseDispatch(event, subscriberIds);
   }
 
-  public listen(callback: (event: Events) => void, types?: Events['type'][]): SubscriptionType<Events, SubscriberArgs> {
+  public listen(
+    callback: (event: Events) => void,
+    types?: Events['type'][],
+  ): SubscriptionType<Events, SubscriberArgs, UnsubscribeArgs> {
     return this._baseListen(callback, types);
   }
 
   protected _baseListen(
     callback: (event: Events) => void,
     types?: Events['type'][],
-  ): SubscriptionType<Events, SubscriberArgs> {
+  ): SubscriptionType<Events, SubscriberArgs, UnsubscribeArgs> {
     const subscriber = {
       callback,
       id: Date.now() + Math.random(),
@@ -193,7 +206,8 @@ export abstract class ExtendedSubscribable<
   Events extends SubscribableEvent<string>,
   Extension extends Record<keyof Extension, unknown>,
   SubscriberArgs = unknown,
-> extends Subscribable<Events, SubscriberArgs> {
+  UnsubscribeArgs = unknown,
+> extends Subscribable<Events, SubscriberArgs, UnsubscribeArgs> {
   public override subscribe(
     callback: (event: Events) => void,
     args?: SubscriberArgs,
@@ -211,7 +225,8 @@ export abstract class ExtendedListenableSubscribable<
   Events extends SubscribableEvent<string>,
   Extension extends Record<keyof Extension, unknown>,
   SubscriberArgs = unknown,
-> extends ListenableSubscribable<Events, SubscriberArgs> {
+  UnsubscribeArgs = unknown,
+> extends ListenableSubscribable<Events, SubscriberArgs, UnsubscribeArgs> {
   public override listen(
     callback: (event: Events) => void,
     types?: Events['type'][],
