@@ -114,13 +114,13 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
               };
             }),
           ),
-        { delayOffset: 1000, delayMultiple: 1000, maxDelay: 30000 },
+        { delayOffset: 1000, delayMultiple: 1000, maxDelay: 30000, retryOnError: false },
       )();
 
+      this.socketsOpened.forEach(s => (s !== socket.ok ? s.close() : undefined));
+      this.socketsOpened = [];
       if (socket.ok) {
         this.socket = socket.ok;
-        this.socketsOpened.forEach(s => (s !== this.socket ? s.close() : undefined));
-        this.socketsOpened = [];
         this.queueSend.forEach(data => this.send(data));
         this.queueSend = [];
         this.dispatch({ type: 'open' });

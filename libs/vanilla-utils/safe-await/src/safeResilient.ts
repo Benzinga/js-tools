@@ -90,6 +90,8 @@ export const safeResilient = <U, T extends Array<unknown>, X>(
         params.onError?.(value.data.err);
         if (params.retryOnError) {
           return run(params, timeRemaining);
+        } else {
+          return { err: value.data.err };
         }
       } else if (params.isError) {
         const isErrorValue = await params.isError(value.data.ok);
@@ -97,6 +99,8 @@ export const safeResilient = <U, T extends Array<unknown>, X>(
           params.previousRequests.splice(value.index, 1);
           if (params.retryOnError) {
             return run(params, timeRemaining);
+          } else {
+            return { err: isErrorValue.err };
           }
         } else {
           return { isErrorOk: isErrorValue.ok, ok: value.data.ok as O };
