@@ -4,10 +4,16 @@ import { setDifference, setIntersection } from '@benzinga/helper-functions';
 export class SubscriptionFieldTracker {
   private readonly subscriptions: Map<SubscriberId, Set<string>> = new Map();
   private readonly fields = new Map<string, number>();
-  private readonly updateFields: (fields: Set<string>) => void;
+  private readonly onFieldAdded: (fields: Set<string>) => void;
+  private readonly onFieldRemoved: (fields: Set<string>) => void;
 
-  constructor(updateFields: (fields: Set<string>) => void) {
-    this.updateFields = updateFields;
+  constructor(onFieldAdded: (fields: Set<string>) => void, onFieldRemoved: (fields: Set<string>) => void) {
+    this.onFieldAdded = onFieldAdded;
+    this.onFieldRemoved = onFieldRemoved;
+  }
+
+  public getFields(): Set<string> {
+    return new Set(this.fields.keys());
   }
 
   public onSubscribe(id: SubscriberId, fields: Set<string> | undefined): void {
@@ -41,18 +47,24 @@ export class SubscriptionFieldTracker {
   }
 
   private addField(fields: Set<string>): void {
+    const addedFields = new Set<string>();
     fields.forEach(field => {
       const val = this.fields.get(field) ?? 0;
+      if (val === 0) {
+        addedFields.add(field);
+      }
       this.fields.set(field, val + 1);
     });
-    this.updateFields(new Set(this.fields.keys()));
+    this.onFieldAdded(addedFields);
   }
 
   private removeField(fields: Set<string>): void {
+    const removedFields = new Set<string>();
     fields.forEach(field => {
       const count = this.fields.get(field) ?? 0;
       if (count === 1) {
         this.fields.delete(field);
+        removedFields.add(field);
       } else if (count === 0) {
         return;
       } else {
@@ -60,15 +72,19 @@ export class SubscriptionFieldTracker {
       }
     });
 
-    this.updateFields(new Set(this.fields.keys()));
+    this.onFieldRemoved(removedFields);
   }
 }
 
 export class LimitedSubscriptionFieldTracker extends SubscriptionFieldTracker {
   private readonly possibleFields: Set<string>;
 
-  constructor(updateFields: (fields: Set<string>) => void, possibleFields: Set<string>) {
-    super(updateFields);
+  constructor(
+    onFieldAdded: (fields: Set<string>) => void,
+    onFieldRemoved: (fields: Set<string>) => void,
+    possibleFields: Set<string>,
+  ) {
+    super(onFieldAdded, onFieldRemoved);
     this.possibleFields = possibleFields;
   }
 
