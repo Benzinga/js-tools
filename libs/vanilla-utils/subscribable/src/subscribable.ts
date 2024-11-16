@@ -9,7 +9,7 @@ export interface SubscriptionType<
   SubscriberArgs = unknown,
   UnsubscribeArgs = unknown,
 > {
-  unsubscribe: (args: UnsubscribeArgs) => void;
+  unsubscribe: (args?: UnsubscribeArgs) => void;
   update: (callback: (event: Events) => void, args?: SubscriberArgs) => void;
 }
 
