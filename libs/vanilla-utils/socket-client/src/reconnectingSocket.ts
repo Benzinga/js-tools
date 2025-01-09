@@ -110,7 +110,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
     this.close();
   }
 
-  private onMessage(event: SubscribableSocketEvent<RESPFormat>) {
+  private onMessage = (event: SubscribableSocketEvent<RESPFormat>) => {
     switch (event.type) {
       case 'close':
         if (event.event.wasClean) {
@@ -145,5 +145,5 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
         this.dispatch(event);
         break;
     }
-  }
+  };
 }
