@@ -126,6 +126,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
           if (this.state === 'disconnected') {
             this.state = 'reconnecting';
             this.dispatch({ errorEvent: event.event, type: 'reconnecting' });
+            this.socket.close();
             this.socket.open();
           }
         }
