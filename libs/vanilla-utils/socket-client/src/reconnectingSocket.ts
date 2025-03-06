@@ -5,13 +5,9 @@ interface SocketDisconnectEvent extends SubscribableEvent<'disconnected'> {
   errorEvent: CloseEvent;
 }
 
-interface SocketReconnectEvent extends SubscribableEvent<'reconnecting'> {
-  errorEvent?: CloseEvent;
-}
-
 export type SubscribableReconnectingSocketEvent<RESPFormat> =
   | SocketDisconnectEvent
-  | SocketReconnectEvent
+  | SubscribableEvent<'reconnecting'>
   | SubscribableEvent<'connected'>
   | SubscribableEvent<'reconnected'>
   | SubscribableSocketEvent<RESPFormat>;
@@ -65,7 +61,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
 
   public reconnect(): void {
     this.state = 'reconnecting';
-    if (this.sleepWakeUpSubscription == null) {
+    if (this.sleepWakeUpSubscription == undefined) {
       this.sleepWakeUpSubscription = this.sleepWakeUp.subscribe(() => this.reconnect());
     }
     this.dispatch({ type: 'reconnecting' });
@@ -122,13 +118,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
         } else {
           this.state = 'disconnected';
           this.dispatch({ errorEvent: event.event, type: 'disconnected' });
-
-          if (this.state === 'disconnected') {
-            this.state = 'reconnecting';
-            this.dispatch({ errorEvent: event.event, type: 'reconnecting' });
-            this.socket.close();
-            this.socket.open();
-          }
+          this.reconnect();
         }
         break;
       case 'open':
