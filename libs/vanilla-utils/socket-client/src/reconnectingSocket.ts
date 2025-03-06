@@ -12,6 +12,7 @@ interface SocketReconnectEvent extends SubscribableEvent<'reconnecting'> {
 export type SubscribableReconnectingSocketEvent<RESPFormat> =
   | SocketDisconnectEvent
   | SocketReconnectEvent
+  | SubscribableEvent<'connected'>
   | SubscribableEvent<'reconnected'>
   | SubscribableSocketEvent<RESPFormat>;
 
@@ -110,7 +111,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
     this.close();
   }
 
-  private onMessage = (event: SubscribableSocketEvent<RESPFormat>) => {
+  private readonly onMessage = (event: SubscribableSocketEvent<RESPFormat>) => {
     switch (event.type) {
       case 'close':
         if (event.event.wasClean) {
@@ -137,6 +138,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
           this.state = 'open';
           this.dispatch(event);
         }
+        this.dispatch({ type: 'connected' });
         break;
       case 'closing':
         this.state = 'closing';
