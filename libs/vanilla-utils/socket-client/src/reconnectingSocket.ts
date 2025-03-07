@@ -30,13 +30,15 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
   private socketSubscription?: Subscription<SubscribableSocket<RESPFormat>>;
   private readonly sleepWakeUp: SubscribableSleepWakeUp;
   private sleepWakeUpSubscription?: Subscription<SubscribableSleepWakeUp>;
-  private readonly webSocketProps: WebSocketProps;
-  private readonly url: URL;
+  private readonly onReconnect?: (url: URL, webSocketProps?: WebSocketProps) => Promise<{ url: URL; webSocketProps?: WebSocketProps }>
+  private webSocketProps: WebSocketProps;
+  private url: URL;
   private state: ReconnectSocketState = 'closed';
 
-  constructor(url: URL, webSocketProps?: WebSocketProps) {
+  constructor(url: URL, webSocketProps?: WebSocketProps, onReconnect?: (url: URL, webSocketProps?: WebSocketProps) => Promise<{ url: URL; webSocketProps?: WebSocketProps }>) {
     super();
     this.url = url;
+    this.onReconnect = onReconnect;
     this.webSocketProps = webSocketProps ?? {};
     this.socket = new SubscribableSocket(url, webSocketProps);
     this.sleepWakeUp = new SubscribableSleepWakeUp();
@@ -59,7 +61,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
     }
   }
 
-  public reconnect(): void {
+  public async reconnect(): Promise<void> {
     this.state = 'reconnecting';
     if (this.sleepWakeUpSubscription == undefined) {
       this.sleepWakeUpSubscription = this.sleepWakeUp.subscribe(() => this.reconnect());
@@ -68,6 +70,12 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
     this.socketSubscription?.unsubscribe();
     this.socketSubscription = undefined;
     this.socket.close();
+
+    if (this.onReconnect) {
+      const { url, webSocketProps } = await this.onReconnect(this.url, this.webSocketProps);
+      this.url = url;
+      this.webSocketProps = webSocketProps ?? {};
+    }
     // we create a new socket because we dont know when the close event will be fired
     this.socket = new SubscribableSocket(this.url, this.webSocketProps);
     this.socketSubscription = this.socket.subscribe(this.onMessage);
