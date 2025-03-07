@@ -30,17 +30,27 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
   private socketSubscription?: Subscription<SubscribableSocket<RESPFormat>>;
   private readonly sleepWakeUp: SubscribableSleepWakeUp;
   private sleepWakeUpSubscription?: Subscription<SubscribableSleepWakeUp>;
-  private readonly onReconnect?: (url: URL, webSocketProps?: WebSocketProps) => Promise<{ url: URL; webSocketProps?: WebSocketProps }>
   private webSocketProps: WebSocketProps;
   private url: URL;
+  private readonly urlFunc?: ((prevUrl: URL | null) => Promise<URL | undefined>);
+  private readonly webSocketPropsFunc?: ((prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>);
   private state: ReconnectSocketState = 'closed';
 
-  constructor(url: URL, webSocketProps?: WebSocketProps, onReconnect?: (url: URL, webSocketProps?: WebSocketProps) => Promise<{ url: URL; webSocketProps?: WebSocketProps }>) {
+  constructor(
+    initUrl: URL,
+    initWebSocketProps?: WebSocketProps,
+    onGetUrl?: ((prevUrl: URL | null) => Promise<URL | undefined>),
+    onGetWebSocketProps?: ((prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>)
+  ) {
     super();
-    this.url = url;
-    this.onReconnect = onReconnect;
-    this.webSocketProps = webSocketProps ?? {};
-    this.socket = new SubscribableSocket(url, webSocketProps);
+
+    this.url = initUrl;
+    this.urlFunc = onGetUrl;
+
+    this.webSocketProps = initWebSocketProps ?? {};
+    this.webSocketPropsFunc = onGetWebSocketProps;
+
+    this.socket = new SubscribableSocket(initUrl, initWebSocketProps);
     this.sleepWakeUp = new SubscribableSleepWakeUp();
   }
 
@@ -49,7 +59,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
       this.socketSubscription?.unsubscribe();
       this.socketSubscription = undefined;
       // we create a new socket because we dont know when the close event will be fired
-      this.socket = new SubscribableSocket(this.url, this.webSocketProps);
+      this.socket = new SubscribableSocket(this.url, this.webSocketProps, this.urlFunc, this.webSocketPropsFunc);
     }
     if (this.state === 'closed' || this.state === 'closing') {
       if (this.socketSubscription === undefined) {
@@ -71,13 +81,8 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
     this.socketSubscription = undefined;
     this.socket.close();
 
-    if (this.onReconnect) {
-      const { url, webSocketProps } = await this.onReconnect(this.url, this.webSocketProps);
-      this.url = url;
-      this.webSocketProps = webSocketProps ?? {};
-    }
     // we create a new socket because we dont know when the close event will be fired
-    this.socket = new SubscribableSocket(this.url, this.webSocketProps);
+    this.socket = new SubscribableSocket(this.url, this.webSocketProps, this.urlFunc, this.webSocketPropsFunc);
     this.socketSubscription = this.socket.subscribe(this.onMessage);
     this.socket.open();
   }

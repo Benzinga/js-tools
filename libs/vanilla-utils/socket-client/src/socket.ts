@@ -45,22 +45,32 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
   SocketFunctions
 > {
   private socket?: WebSocket;
-  private readonly url: URL;
+  private url: URL;
   private state: SocketState;
-  private readonly webSocketProps: WebSocketProps;
+  private webSocketProps: WebSocketProps;
   private queueSend: (string | ArrayBuffer | ArrayBufferView | Blob)[] = [];
   private socketsOpened: WebSocket[] = [];
+  private readonly urlFunc?: ((prevUrl: URL | null) => Promise<URL | undefined>);
+  private readonly webSocketPropsFunc?: ((prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>);
 
-  constructor(url: URL, webSocketProps?: WebSocketProps) {
+  constructor(
+    url: URL,
+    webSocketProps?: WebSocketProps,
+    onGetUrl?: ((prevUrl: URL | null) => Promise<URL | undefined>),
+    onGetWebSocketProps?: ((prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>)
+  ) {
     super();
     this.url = url;
     this.webSocketProps = webSocketProps ?? {};
     this.state = 'closed';
+    this.urlFunc = onGetUrl;
+    this.webSocketPropsFunc = onGetWebSocketProps;
   }
 
   public async open(): Promise<void> {
     if (this.socket === undefined && this.state !== 'opening') {
       this.state = 'opening';
+      const [url, webSocketProps] = await Promise.all([this.getUrls(), this.getWebSocketProps()])
       const socket = await safeResilient(
         () =>
           safeAwait<WebSocket | null>(
@@ -69,8 +79,8 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
                 reject(new SafeError('connection closed while opening', 'socket'));
                 return;
               }
-              const socket = new WebSocket(this.url.toString());
-              socket.binaryType = this.webSocketProps.binaryType ?? 'blob';
+              const socket = new WebSocket(url.toString());
+              socket.binaryType = webSocketProps.binaryType ?? 'blob';
               this.socketsOpened.push(socket);
               socket.onopen = () => {
                 if (this.state === 'opening') {
@@ -198,5 +208,26 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
 
   protected override onZeroSubscriptions(): void {
     this.close();
+  }
+
+
+  private async getUrls(): Promise<URL> {
+    if (this.urlFunc) {
+      const url = await this.urlFunc(this.url);
+      if (url) {
+        this.url = url;
+      }
+    }
+    return this.url;
+  }
+
+  private async getWebSocketProps(): Promise<WebSocketProps> {
+    if (this.webSocketPropsFunc) {
+      const webSocketProps = await this.webSocketPropsFunc(this.webSocketProps) ?? {};
+      if (webSocketProps) {
+        this.webSocketProps = webSocketProps;
+      }
+    }
+    return this.webSocketProps;
   }
 }
