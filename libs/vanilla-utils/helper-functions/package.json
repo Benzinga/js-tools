@@ -7,11 +7,18 @@
     "access": "public"
   },
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "@swc/helpers": "~0.5.11"
   },
-  "type": "commonjs",
+  "type": "module",
   "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    }
+  },
   "typings": "./src/index.d.ts"
 }
