@@ -1,36 +1,22 @@
 {
-  "name": "vanilla-utils-session",
+  "name": "session",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/vanilla-utils/session/src",
   "projectType": "library",
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "dist\\{projectRoot}",
-        "currentVersionResolver": "git-tag"
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag",
+        "fallbackCurrentVersionResolver": "disk"
       }
     }
   },
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:swc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/libs/vanilla-utils/session",
-        "main": "libs/vanilla-utils/session/src/index.ts",
-        "tsConfig": "libs/vanilla-utils/session/tsconfig.lib.json",
-        "assets": [
-          "libs/vanilla-utils/session/*.md"
-        ],
-        "swcrc": "libs/vanilla-utils/session/.swcrc"
-      }
-    },
     "nx-release-publish": {
       "options": {
-        "packageRoot": "dist\\{projectRoot}"
+        "packageRoot": "dist/{projectRoot}"
       }
     }
   }

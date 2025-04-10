@@ -6,30 +6,17 @@
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "dist\\{projectRoot}",
-        "currentVersionResolver": "git-tag"
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag",
+        "fallbackCurrentVersionResolver": "disk"
       }
     }
   },
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:swc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/libs/managers/logging",
-        "main": "libs/managers/logging/src/index.ts",
-        "tsConfig": "libs/managers/logging/tsconfig.lib.json",
-        "assets": [
-          "libs/managers/logging/*.md"
-        ]
-      }
-    },
     "nx-release-publish": {
       "options": {
-        "packageRoot": "dist\\{projectRoot}"
+        "packageRoot": "dist/{projectRoot}"
       }
     }
   }

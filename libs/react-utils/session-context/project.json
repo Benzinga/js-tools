@@ -1,9 +1,23 @@
 {
-  "name": "react-utils-session-context",
+  "name": "session-context",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/react-utils/session-context/src",
   "projectType": "library",
   "tags": [],
-  "// targets": "to see all targets run: nx show project react-utils-session-context --web",
-  "targets": {}
+  "targets": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    }
+  },
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag",
+        "fallbackCurrentVersionResolver": "disk"
+      }
+    }
+  }
 }

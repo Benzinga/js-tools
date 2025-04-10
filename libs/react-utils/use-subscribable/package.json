@@ -7,11 +7,13 @@
     "access": "public"
   },
   "private": false,
-  "version": "1.1.2",
-  "peerDependencies": {
-    "@benzinga/subscribable": ">=1.0.0",
-    "@benzinga/helper-functions": ">=1.0.0",
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+  "version": "1.1.4",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
   }
 }

@@ -1,35 +1,22 @@
 {
-  "name": "vanilla-utils-socket-client",
+  "name": "socket-client",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/vanilla-utils/socket-client/src",
   "projectType": "library",
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "dist\\{projectRoot}",
-        "currentVersionResolver": "git-tag"
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag",
+        "fallbackCurrentVersionResolver": "disk"
       }
     }
   },
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:swc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/libs/vanilla-utils/socket-client",
-        "main": "libs/vanilla-utils/socket-client/src/index.ts",
-        "tsConfig": "libs/vanilla-utils/socket-client/tsconfig.lib.json",
-        "assets": [
-          "libs/vanilla-utils/socket-client/*.md"
-        ]
-      }
-    },
     "nx-release-publish": {
       "options": {
-        "packageRoot": "dist\\{projectRoot}"
+        "packageRoot": "dist/{projectRoot}"
       }
     }
   }

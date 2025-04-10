@@ -1,35 +1,22 @@
 {
-  "name": "vanilla-utils-iter",
+  "name": "iter",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/vanilla-utils/iter/src",
   "projectType": "library",
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "dist\\{projectRoot}",
-        "currentVersionResolver": "git-tag"
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag",
+        "fallbackCurrentVersionResolver": "disk"
       }
     }
   },
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:swc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/libs/vanilla-utils/iter",
-        "main": "libs/vanilla-utils/iter/src/index.ts",
-        "tsConfig": "libs/vanilla-utils/iter/tsconfig.lib.json",
-        "assets": [
-          "libs/vanilla-utils/iter/*.md"
-        ]
-      }
-    },
     "nx-release-publish": {
       "options": {
-        "packageRoot": "dist\\{projectRoot}"
+        "packageRoot": "dist/{projectRoot}"
       }
     }
   }

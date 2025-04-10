@@ -1,35 +1,22 @@
 {
-  "name": "vanilla-utils-helper-functions",
+  "name": "helper-functions",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/vanilla-utils/helper-functions/src",
   "projectType": "library",
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "dist\\{projectRoot}",
-        "currentVersionResolver": "git-tag"
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag",
+        "fallbackCurrentVersionResolver": "disk"
       }
     }
   },
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:swc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/libs/vanilla-utils/helper-functions",
-        "main": "libs/vanilla-utils/helper-functions/src/index.ts",
-        "tsConfig": "libs/vanilla-utils/helper-functions/tsconfig.lib.json",
-        "assets": [
-          "libs/vanilla-utils/helper-functions/*.md"
-        ]
-      }
-    },
     "nx-release-publish": {
       "options": {
-        "packageRoot": "dist\\{projectRoot}"
+        "packageRoot": "dist/{projectRoot}"
       }
     }
   }
