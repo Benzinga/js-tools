@@ -24,7 +24,8 @@
         "tsConfig": "libs/vanilla-utils/session/tsconfig.lib.json",
         "assets": [
           "libs/vanilla-utils/session/*.md"
-        ]
+        ],
+        "swcrc": "libs/vanilla-utils/session/.swcrc"
       }
     },
     "nx-release-publish": {

@@ -11,6 +11,10 @@
   "dependencies": {
     "@swc/helpers": "~0.5.11"
   },
+  "peerDependencies": {
+    "@benzinga/subscribable": ">=1.0.0",
+    "@benzinga/safe-await": ">=1.0.0"
+  },
   "type": "module",
   "main": "./src/index.js",
   "module": "./src/index.js",
