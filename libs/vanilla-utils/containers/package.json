@@ -7,7 +7,7 @@
     "access": "public"
   },
   "private": false,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "dependencies": { },
   "type": "module",
   "main": "./index.js",

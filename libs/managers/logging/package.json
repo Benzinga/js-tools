@@ -7,9 +7,14 @@
     "access": "public"
   },
   "private": false,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "dependencies": {
     "@swc/helpers": "~0.5.11"
+  },
+  "peerDependencies": {
+    "@benzinga/subscribable": ">=1.0.0",
+    "@benzinga/safe-await": ">=2.0.0",
+    "@benzinga/session": ">=1.0.0"
   },
   "type": "module",
   "main": "./index.js",
