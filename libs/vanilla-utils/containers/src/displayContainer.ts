@@ -1,4 +1,4 @@
-import { ExtendedSubscribable, Subscribable, Subscription, SubscribableEvent } from '@benzinga/subscribable';
+import { Subscribable, Subscription, SubscribableEvent } from '@benzinga/subscribable';
 
 import { Buffer, ContainerElement } from './buffers/buffer';
 
@@ -89,9 +89,8 @@ export abstract class DisplayContainer<
   ContainerType,
   Event extends SubscribableEvent<string>,
   BufferType extends Buffer<ContainerType>,
-> extends ExtendedSubscribable<
-  DisplayContainerEvent<ContainerType>,
-  DisplayContainerFunctions<ContainerType, Event, BufferType>
+> extends Subscribable<
+  DisplayContainerEvent<ContainerType>
 > {
   private liveBuffer: BufferType;
   private historicBuffer: BufferType;
@@ -195,29 +194,6 @@ export abstract class DisplayContainer<
   public pauseHistoric = (): void => {
     this.status['historic'] = 'paused';
     this.dispatch({ status: this.status, type: 'status' });
-  };
-
-  protected onSubscribe = (): DisplayContainerFunctions<ContainerType, Event, BufferType> => {
-    return {
-      clear: this.clear,
-      getDisplayItems: this.getDisplayItems,
-      getDisplayItemsLength: this.getDisplayItemsLength,
-      getHistoricItems: this.getHistoricItems,
-      getHistoricItemsLength: this.getHistoricItemsLength,
-      getLiveItems: this.getLiveItems,
-      getLiveItemsLength: this.getLiveItemsLength,
-      getStatus: this.getStatus,
-      pause: this.pause,
-      pauseHistoric: this.pauseHistoric,
-      pauseLive: this.pauseLive,
-      pushHistoricItem: this.pushHistoricItem,
-      pushHistoricItems: this.pushHistoricItems,
-      pushLiveItem: this.pushLiveItem,
-      pushLiveItems: this.pushLiveItems,
-      resume: this.resume,
-      resumeHistoric: this.resumeHistoric,
-      resumeLive: this.resumeLive,
-    };
   };
 
   protected override onFirstSubscription = (): void => {

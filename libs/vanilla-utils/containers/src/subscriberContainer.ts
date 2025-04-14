@@ -1,4 +1,4 @@
-import { ExtendedSubscribable } from '@benzinga/subscribable';
+import { Subscribable } from '@benzinga/subscribable';
 
 import { Buffer, ContainerElement } from './buffers/buffer';
 import { StatefulContainer, StatefulTransaction } from './statefulContainer';
@@ -29,20 +29,9 @@ export type ContainerEvent<ContainerType> =
   | QueuedEvent<ContainerType>
   | StateChangedEvent;
 
-interface ContainerFunctions<ContainerType, BufferType extends Buffer<ContainerType>> {
-  clear: SubscriberContainer<ContainerType, BufferType>['clear'];
-  getBufferedItems: SubscriberContainer<ContainerType, BufferType>['getBufferedItems'];
-  getBufferedItemsLength: SubscriberContainer<ContainerType, BufferType>['getBufferedItemsLength'];
-  getQueuedItems: SubscriberContainer<ContainerType, BufferType>['getQueuedItems'];
-  getQueuedItemsLength: SubscriberContainer<ContainerType, BufferType>['getQueuedItemsLength'];
-  getStatus: SubscriberContainer<ContainerType, BufferType>['getStatus'];
-  pause: SubscriberContainer<ContainerType, BufferType>['pause'];
-  resume: SubscriberContainer<ContainerType, BufferType>['resume'];
-}
 
-export class SubscriberContainer<ContainerType, BufferType extends Buffer<ContainerType>> extends ExtendedSubscribable<
-  ContainerEvent<ContainerType>,
-  ContainerFunctions<ContainerType, BufferType>
+export class SubscriberContainer<ContainerType, BufferType extends Buffer<ContainerType>> extends Subscribable<
+  ContainerEvent<ContainerType>
 > {
   private container: StatefulContainer<ContainerType, BufferType>;
 
@@ -92,18 +81,5 @@ export class SubscriberContainer<ContainerType, BufferType extends Buffer<Contai
     const transaction = this.container.updateItems(items);
     this.dispatch(transaction);
     return transaction;
-  };
-
-  protected onSubscribe = (): ContainerFunctions<ContainerType, BufferType> => {
-    return {
-      clear: this.clear,
-      getBufferedItems: this.getBufferedItems,
-      getBufferedItemsLength: this.getBufferedItemsLength,
-      getQueuedItems: this.getQueuedItems,
-      getQueuedItemsLength: this.getQueuedItemsLength,
-      getStatus: this.getStatus,
-      pause: this.pause,
-      resume: this.resume,
-    };
   };
 }
