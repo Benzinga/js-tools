@@ -7,7 +7,7 @@
     "access": "public"
   },
   "private": false,
-  "version": "1.2.3",
+  "version": "1.2.5",
   "peerDependencies": {
     "@benzinga/subscribable": ">=1.0.0",
     "@benzinga/safe-await": ">=1.0.0"

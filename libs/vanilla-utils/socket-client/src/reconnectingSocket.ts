@@ -1,5 +1,5 @@
 import { SubscribableSocket, SocketState, SubscribableSocketEvent, WebSocketProps } from './socket';
-import { ExtendedSubscribable, SubscribableEvent, Subscription } from '@benzinga/subscribable';
+import { Subscribable, SubscribableEvent, Subscription } from '@benzinga/subscribable';
 import { SubscribableSleepWakeUp } from './wakeUp';
 interface SocketDisconnectEvent extends SubscribableEvent<'disconnected'> {
   errorEvent: CloseEvent;
@@ -14,17 +14,8 @@ export type SubscribableReconnectingSocketEvent<RESPFormat> =
 
 export type ReconnectSocketState = SocketState | 'reconnecting' | 'disconnected';
 
-interface ReconnectingSocketFunctions {
-  close: SubscribableReconnectingSocket['close'];
-  open: SubscribableReconnectingSocket['open'];
-  reconnect: SubscribableReconnectingSocket['reconnect'];
-  send: SubscribableReconnectingSocket['send'];
-  sendObject: SubscribableReconnectingSocket['sendObject'];
-}
-
-export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> extends ExtendedSubscribable<
-  SubscribableReconnectingSocketEvent<RESPFormat>,
-  ReconnectingSocketFunctions
+export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = unknown> extends Subscribable<
+  SubscribableReconnectingSocketEvent<RESPFormat>
 > {
   private socket: SubscribableSocket<RESPFormat, REQFormat>;
   private socketSubscription?: Subscription<SubscribableSocket<RESPFormat>>;
@@ -50,7 +41,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
     this.webSocketProps = initWebSocketProps ?? {};
     this.webSocketPropsFunc = onGetWebSocketProps;
 
-    this.socket = new SubscribableSocket(initUrl, initWebSocketProps);
+    this.socket = new SubscribableSocket(initUrl, initWebSocketProps, onGetUrl, onGetWebSocketProps);
     this.sleepWakeUp = new SubscribableSleepWakeUp();
   }
 
@@ -106,17 +97,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
     return this.state;
   }
 
-  protected onSubscribe(): ReconnectingSocketFunctions {
-    return {
-      close: this.close,
-      open: this.open,
-      reconnect: this.reconnect,
-      send: this.send,
-      sendObject: this.sendObject,
-    };
-  }
-
-  protected override onZeroSubscriptions(): void {
+  protected override onZeroSubscriptions = (): void => {
     this.close();
   }
 

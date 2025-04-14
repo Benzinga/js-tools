@@ -1,5 +1,5 @@
 import { safeAwait, SafeError, safeResilient } from '@benzinga/safe-await';
-import { ExtendedSubscribable, SubscribableEvent } from '@benzinga/subscribable';
+import { Subscribable, SubscribableEvent } from '@benzinga/subscribable';
 interface SocketRequestEvent extends SubscribableEvent<'request'> {
   msg: string | ArrayBuffer | ArrayBufferView | Blob;
 }
@@ -33,16 +33,9 @@ export type SocketState = 'closed' | 'closing' | 'open' | 'opening';
 
 export type WebSocketProps = Partial<Pick<WebSocket, 'binaryType'>>;
 
-interface SocketFunctions {
-  close: SubscribableSocket['close'];
-  open: SubscribableSocket['open'];
-  send: SubscribableSocket['send'];
-  sendObject: SubscribableSocket['sendObject'];
-}
 
-export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends ExtendedSubscribable<
-  SubscribableSocketEvent<RESPFormat>,
-  SocketFunctions
+export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends Subscribable<
+  SubscribableSocketEvent<RESPFormat>
 > {
   private socket?: WebSocket;
   private url: URL;
@@ -197,16 +190,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
     this.socket = undefined;
   }
 
-  protected override onSubscribe(): SocketFunctions {
-    return {
-      close: this.close,
-      open: this.open,
-      send: this.send,
-      sendObject: this.sendObject,
-    };
-  }
-
-  protected override onZeroSubscriptions(): void {
+  protected override onZeroSubscriptions = (): void => {
     this.close();
   }
 

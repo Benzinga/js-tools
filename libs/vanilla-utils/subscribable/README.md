@@ -239,12 +239,8 @@ interface SetRemoveEvents { // second event that can be dispatched as you can se
 
 type SetEvents = SetAddEvents | SetRemoveEvents; // all the events that can be fired by the subscribable
 
-interface SetSubscribableFunctions {
- add: (num: number) => void;
- remove: (num: number) => void
-}
 
-class SetSubscribable extends ExtendedSubscribable<SetEvents, SetSubscribableFunctions> { // extending the subscribable and telling the subscribable when events can be fired
+class SetSubscribable extends Subscribable<SetEvents> { // extending the subscribable and telling the subscribable when events can be fired
  private items = new Set<number>();
 
  private add = (num: number ): void => { // note i made add protected to make sure that only subscribers can add
@@ -256,11 +252,6 @@ class SetSubscribable extends ExtendedSubscribable<SetEvents, SetSubscribableFun
   this.items.delete(num);
   this.dispatch({type: 'remove', item: num}); // fire out the event inherited from  Subscribable
  }
-
- protected onSubscribe = () => ({
-  add: this.add,
-  remove: this.remove,
- })
 }
 
 type SetSubscription = ReturnType<SetSubscribable['subscribe']>; // this is a helper type that represents value returned from the
