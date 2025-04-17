@@ -7,13 +7,22 @@
     "access": "public"
   },
   "private": false,
-  "version": "1.1.5",
+  "version": "1.1.7",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {
     ".": {
       "import": "./index.mjs",
       "require": "./index.js"
+    }
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
     }
   }
 }

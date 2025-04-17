@@ -78,7 +78,7 @@ export class SubscribableMultiplexer<Events extends SubscribableEvent<string>, S
 
   public get = (id: SubscriberUniqueId): Subscribable<Events, SubscriberArgs> | undefined => this.subscribables.get(id);
 
-  protected override onFirstSubscription = (args: SubscriberArgs): void => {
+  protected override onFirstSubscription = (args?: SubscriberArgs): void => {
     const subscriptions: [SubscriberUniqueId, Subscription<Subscribable<Events, SubscriberArgs>>][] = [];
     this.subscribables.forEach((val, key) =>
       subscriptions.push([key, val.subscribe(this.onDispatch, args)]),
