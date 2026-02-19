@@ -89,7 +89,7 @@
   "nx": {
     "includedScripts": []
   },
-  "resolutions": {
+  "overrides": {
     "form-data": "^4.0.4",
     "axios": "^1.8.2",
     "playwright": "^1.55.1",
