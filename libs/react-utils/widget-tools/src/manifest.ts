@@ -61,9 +61,9 @@ export type LoaderConvertorFactory<T extends Loader[]> = UnpackedArray<{
 
 export interface MenuItemType<Data extends object = object, Permission = unknown> {
   children?:
-  | MenuItemType<Data>[]
-  | ((session: Session) => MenuItemType<Data>[])
-  | ((session: Session) => Promise<MenuItemType<Data>[]>);
+    | MenuItemType<Data>[]
+    | ((session: Session) => MenuItemType<Data>[])
+    | ((session: Session) => Promise<MenuItemType<Data>[]>);
   config?: WidgetConfig<Data>;
   icon?: React.FC;
   name?: string;
@@ -97,10 +97,10 @@ export interface WidgetManifest<
     session: Session,
   ) => WIDGET_ITERATION['widgetParameters'] | Promise<WIDGET_ITERATION['widgetParameters']>;
   menuItem?:
-  | MenuItemType<WIDGET_ITERATION['widgetParameters']>
-  | ((session: Session) => MenuItemType<WIDGET_ITERATION['widgetParameters']>)
-  | ((session: Session) => Promise<MenuItemType<WIDGET_ITERATION['widgetParameters']>>)
-  | boolean;
+    | MenuItemType<WIDGET_ITERATION['widgetParameters']>
+    | ((session: Session) => MenuItemType<WIDGET_ITERATION['widgetParameters']>)
+    | ((session: Session) => Promise<MenuItemType<WIDGET_ITERATION['widgetParameters']>>)
+    | boolean;
   migrator: (
     configs: LoaderConvertor<ALL_WIDGET_ITERATIONS>,
     session: Session,

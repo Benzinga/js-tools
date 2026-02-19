@@ -29,7 +29,6 @@ export type ContainerEvent<ContainerType> =
   | QueuedEvent<ContainerType>
   | StateChangedEvent;
 
-
 export class SubscriberContainer<ContainerType, BufferType extends Buffer<ContainerType>> extends Subscribable<
   ContainerEvent<ContainerType>
 > {

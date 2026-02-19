@@ -15,5 +15,15 @@
       "import": "./index.mjs",
       "require": "./index.js"
     }
+  },
+  "dependencies": {
+    "@benzinga/helper-functions": "1.0.4",
+    "@benzinga/session": "2.0.5",
+    "@benzinga/subscribable": "2.0.10",
+    "@nx/vite": "20.7.2",
+    "@vitejs/plugin-react": "^4.2.0",
+    "react": "18.3.1",
+    "vite": "^6.4.1",
+    "vite-plugin-dts": "~4.5.0"
   }
 }

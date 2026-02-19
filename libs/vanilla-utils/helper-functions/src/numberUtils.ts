@@ -205,7 +205,6 @@ export const isEven = (n: number) => Math.abs(n % 2) === 0;
 const roundNumber = (value: number, numberOfDecimalPlaces: number) =>
   Math.round(value * Math.pow(10, numberOfDecimalPlaces)) / Math.pow(10, numberOfDecimalPlaces);
 
-
 export function numberShorthand(
   value: string | number | null | undefined,
   numberOfDecimalPlaces = 3,

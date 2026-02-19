@@ -19,10 +19,10 @@ export type SubscribableMultiplexerEvent<T extends SubscribableEvent<string>, Su
   | SubscribableMultiplexerRemovedEvent
   | T;
 
-export class SubscribableMultiplexer<Events extends SubscribableEvent<string>, SubscriberArgs = unknown> extends Subscribable<
-  SubscribableMultiplexerEvent<Events, SubscriberArgs>,
-  SubscriberArgs
-> {
+export class SubscribableMultiplexer<
+  Events extends SubscribableEvent<string>,
+  SubscriberArgs = unknown,
+> extends Subscribable<SubscribableMultiplexerEvent<Events, SubscriberArgs>, SubscriberArgs> {
   protected subscribables: Map<SubscriberUniqueId, Subscribable<Events, SubscriberArgs>>;
   protected subscriptions?: Map<SubscriberUniqueId, Subscription<Subscribable<Events, SubscriberArgs>>>;
 
@@ -80,9 +80,7 @@ export class SubscribableMultiplexer<Events extends SubscribableEvent<string>, S
 
   protected override onFirstSubscription = (args?: SubscriberArgs): void => {
     const subscriptions: [SubscriberUniqueId, Subscription<Subscribable<Events, SubscriberArgs>>][] = [];
-    this.subscribables.forEach((val, key) =>
-      subscriptions.push([key, val.subscribe(this.onDispatch, args)]),
-    );
+    this.subscribables.forEach((val, key) => subscriptions.push([key, val.subscribe(this.onDispatch, args)]));
     this.subscriptions = new Map(subscriptions);
   };
 

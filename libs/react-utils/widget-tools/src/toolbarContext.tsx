@@ -2,8 +2,7 @@ import React from 'react';
 
 import { RecursivePartial, noop } from '@benzinga/helper-functions';
 
-
-export type  Hue = number | null;
+export type Hue = number | null;
 
 export type ControlsKey = 'closeTool' | 'popoutTool' | 'submenu' | string;
 

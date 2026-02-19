@@ -11,5 +11,8 @@
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
-  "dependencies": {}
+  "dependencies": {
+    "@benzinga/safe-await": "1.0.6",
+    "@benzinga/helper-functions": "1.0.4"
+  }
 }

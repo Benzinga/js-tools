@@ -36,14 +36,11 @@ export class LoggingManager extends Subscribable<LoggingManagerEvent> {
             errorType?: string;
             type: 'error';
           };
-          this.log(
-            'error',
-            {
-              category: event.errorType ?? '',
-              data: event?.error,
-              message: event?.error?.toString() ?? '',
-            },
-          );
+          this.log('error', {
+            category: event.errorType ?? '',
+            data: event?.error,
+            message: event?.error?.toString() ?? '',
+          });
         }
       },
     );

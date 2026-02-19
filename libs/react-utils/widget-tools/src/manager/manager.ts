@@ -7,28 +7,28 @@ import { Session } from '@benzinga/session';
 
 export type DaemonActions<T extends GlobalSettingManifest = GlobalSettingManifest> =
   | {
-    type: 'globalParameterChangeList';
-    moduleId: T['id'];
-    settings: T['defaultGlobalParameters'];
-  }
+      type: 'globalParameterChangeList';
+      moduleId: T['id'];
+      settings: T['defaultGlobalParameters'];
+    }
   | {
-    type: 'parameterChangeList';
-    widgetId: string;
-    parameters: T['defaultWidgetParameters'];
-  }
+      type: 'parameterChangeList';
+      widgetId: string;
+      parameters: T['defaultWidgetParameters'];
+    }
   | {
-    type: 'shutdown';
-  }
+      type: 'shutdown';
+    }
   | {
-    type: 'widgetAdded';
-    moduleId: T['id'];
-    widgetId: string;
-  }
+      type: 'widgetAdded';
+      moduleId: T['id'];
+      widgetId: string;
+    }
   | {
-    type: 'widgetRemoved';
-    moduleId: T['id'];
-    widgetId: string;
-  };
+      type: 'widgetRemoved';
+      moduleId: T['id'];
+      widgetId: string;
+    };
 
 export interface DispatchEvent {
   [key: string]: unknown;

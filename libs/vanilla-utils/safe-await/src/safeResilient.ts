@@ -39,8 +39,9 @@ export interface SafeResilientParams<U, O> {
   retryOnError?: boolean; // true
 }
 
-interface SafeResilientRecurParams<U, O>
-  extends Required<Pick<SafeResilientParams<U, O>, Exclude<keyof SafeResilientParams<U, O>, 'isError' | 'onError'>>> {
+interface SafeResilientRecurParams<U, O> extends Required<
+  Pick<SafeResilientParams<U, O>, Exclude<keyof SafeResilientParams<U, O>, 'isError' | 'onError'>>
+> {
   isError?: (result: U | undefined) => SafePromise<O>;
   onError?: (err: SafeError) => void;
   retryDelay: number;
