@@ -18,24 +18,16 @@ export interface RestfulClientOptionalParams {
 
 export class RestfulClient<DATA_REQUEST_INIT extends DataRequestInit = DataRequestInit> {
   protected hostname: URL;
-  protected givenInitFetch?: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
+  protected givenInitFetch?: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>;
   private debouncedGetRequest = new Map<string, SafePromise<unknown>>();
 
   constructor(
     hostname: URL,
-    initFetch?: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
+    initFetch?: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>,
   ) {
     this.hostname = hostname;
     this.givenInitFetch = initFetch;
   }
-
-  protected initFetch = async (init: Partial<DATA_REQUEST_INIT>): SafePromise<Partial<DATA_REQUEST_INIT>> => {
-    if (this.givenInitFetch) {
-      return this.givenInitFetch(init);
-    } else {
-      return { ok: init };
-    }
-  };
 
   public URL = (pathname: string | undefined, params?: object): URL => {
     const actualParams = params || {};
@@ -136,5 +128,13 @@ export class RestfulClient<DATA_REQUEST_INIT extends DataRequestInit = DataReque
   public delete = (input: URL, init: Partial<DATA_REQUEST_INIT> = {}): SafePromise<Response> => {
     init.method = 'DELETE';
     return this.fetch(input.toString(), init);
+  };
+
+  protected initFetch = async (init: Partial<DATA_REQUEST_INIT>): SafePromise<Partial<DATA_REQUEST_INIT>> => {
+    if (this.givenInitFetch) {
+      return this.givenInitFetch(init);
+    } else {
+      return { ok: init };
+    }
   };
 }

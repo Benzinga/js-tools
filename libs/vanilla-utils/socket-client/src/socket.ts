@@ -33,7 +33,6 @@ export type SocketState = 'closed' | 'closing' | 'open' | 'opening';
 
 export type WebSocketProps = Partial<Pick<WebSocket, 'binaryType'>>;
 
-
 export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> extends Subscribable<
   SubscribableSocketEvent<RESPFormat>
 > {
@@ -43,14 +42,16 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
   private webSocketProps: WebSocketProps;
   private queueSend: (string | ArrayBuffer | ArrayBufferView | Blob)[] = [];
   private socketsOpened: WebSocket[] = [];
-  private readonly urlFunc?: ((prevUrl: URL | null) => Promise<URL | undefined>);
-  private readonly webSocketPropsFunc?: ((prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>);
+  private readonly urlFunc?: (prevUrl: URL | null) => Promise<URL | undefined>;
+  private readonly webSocketPropsFunc?: (
+    prevWebSocketProps?: WebSocketProps | undefined,
+  ) => Promise<WebSocketProps | undefined>;
 
   constructor(
     url: URL,
     webSocketProps?: WebSocketProps,
-    onGetUrl?: ((prevUrl: URL | null) => Promise<URL | undefined>),
-    onGetWebSocketProps?: ((prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>)
+    onGetUrl?: (prevUrl: URL | null) => Promise<URL | undefined>,
+    onGetWebSocketProps?: (prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>,
   ) {
     super();
     this.url = url;
@@ -63,7 +64,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
   public async open(): Promise<void> {
     if (this.socket === undefined && this.state !== 'opening') {
       this.state = 'opening';
-      const [url, webSocketProps] = await Promise.all([this.getUrls(), this.getWebSocketProps()])
+      const [url, webSocketProps] = await Promise.all([this.getUrls(), this.getWebSocketProps()]);
       const socket = await safeResilient(
         () =>
           safeAwait<WebSocket | null>(
@@ -117,7 +118,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
               };
             }),
           ),
-        { delayOffset: 1000, delayMultiple: 1000, maxDelay: 30000, retryOnError: false },
+        { delayMultiple: 1000, delayOffset: 1000, maxDelay: 30000, retryOnError: false },
       )();
 
       this.socketsOpened.forEach(s => (s !== socket.ok ? s.close() : undefined));
@@ -192,8 +193,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
 
   protected override onZeroSubscriptions = (): void => {
     this.close();
-  }
-
+  };
 
   private async getUrls(): Promise<URL> {
     if (this.urlFunc) {
@@ -207,7 +207,7 @@ export class SubscribableSocket<RESPFormat = unknown, REQFormat = unknown> exten
 
   private async getWebSocketProps(): Promise<WebSocketProps> {
     if (this.webSocketPropsFunc) {
-      const webSocketProps = await this.webSocketPropsFunc(this.webSocketProps) ?? {};
+      const webSocketProps = (await this.webSocketPropsFunc(this.webSocketProps)) ?? {};
       if (webSocketProps) {
         this.webSocketProps = webSocketProps;
       }

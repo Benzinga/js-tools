@@ -16,9 +16,7 @@ interface QueryParamsObject {
   [key: string]: number | string;
 }
 
-export type DataRequestInit<T = unknown, X = unknown> =
-  | TimeoutableRequestInit
-  | ResilientJsonRequestInit<T, X>;
+export type DataRequestInit<T = unknown, X = unknown> = TimeoutableRequestInit | ResilientJsonRequestInit<T, X>;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const addParamsToURL = (url: URL, params: object): URL => {
@@ -83,7 +81,7 @@ export const extendPathname = (url: URL, pathname: string): URL => {
 export const safeJsonDataFetch = async <T, DATA_REQUEST_INIT extends DataRequestInit = DataRequestInit>(
   input: RequestInfo,
   init: Partial<DATA_REQUEST_INIT>,
-  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
+  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>,
 ): SafePromise<T> => {
   const initializedConfig = await initFetch(init);
   if (initializedConfig.err) {
@@ -99,7 +97,7 @@ export const safeJsonDataFetch = async <T, DATA_REQUEST_INIT extends DataRequest
 export const safeDataFetchWithNoContent = async <T, DATA_REQUEST_INIT extends DataRequestInit = DataRequestInit>(
   input: RequestInfo,
   init: Partial<DATA_REQUEST_INIT>,
-  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
+  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>,
 ): SafePromise<T> => {
   const initializedConfig = await initFetch(init);
   if (initializedConfig.err) {
@@ -115,7 +113,7 @@ export const safeDataFetchWithNoContent = async <T, DATA_REQUEST_INIT extends Da
 export const safeDataFetch = async <DATA_REQUEST_INIT extends DataRequestInit = DataRequestInit>(
   input: RequestInfo,
   init: Partial<DATA_REQUEST_INIT>,
-  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>
+  initFetch: (init: Partial<DATA_REQUEST_INIT>) => SafePromise<Partial<DATA_REQUEST_INIT>>,
 ): SafePromise<Response> => {
   const initializedConfig = await initFetch(init);
   if (initializedConfig.err) {

@@ -18,7 +18,11 @@
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    "@benzinga/session": "2.0.5",
+    "vite": "^6.4.1",
+    "@vitejs/plugin-react": "^4.2.0",
+    "vite-plugin-dts": "~4.5.0",
+    "@nx/vite": "20.7.2"
   },
   "peerDependenciesMeta": {
     "react-dom": {

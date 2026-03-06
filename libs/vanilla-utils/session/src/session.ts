@@ -4,7 +4,7 @@ import { SessionEnvironment } from './env';
 
 export interface Manager<T extends Subscribable<any>> {
   getName: () => string;
-  new(session: Session): T;
+  new (session: Session): T;
 }
 
 export interface Environment {

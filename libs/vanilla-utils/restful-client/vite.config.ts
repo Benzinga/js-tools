@@ -12,10 +12,7 @@ export default defineConfig(() => {
   let external: string[] = [];
   try {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
-    external = [
-      ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.peerDependencies || {})
-    ];
+    external = [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})];
   } catch (e) {
     console.warn('Could not read package.json, external dependencies might not be correctly identified');
   }
@@ -24,26 +21,6 @@ export default defineConfig(() => {
   const workspacePackageRegex = /from\s+['"][^'"]*\/([^/]+)\/src\/.*['"]/g;
 
   return {
-    root: __dirname,
-    cacheDir: '../../../node_modules/.vite/libs/vanilla-utils/restful-client',
-    plugins: [
-      nxViteTsPaths(),
-      nxCopyAssetsPlugin(['*.md']),
-
-      dts({
-        entryRoot: path.join(__dirname, "src"),
-        tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
-        // Preserve the import paths for external modules
-        staticImport: true,
-        beforeWriteFile: (filePath, content) => {
-          // Generic replace function for workspace packages (converts relative paths to @benzinga/package format)
-          const updatedContent = content.replace(workspacePackageRegex, (match, packageName) => {
-            return `from '@benzinga/${packageName}'`;
-          });
-          return { filePath, content: updatedContent };
-        }
-      }),
-    ],
     // Uncomment this if you are using workers.
     // worker: {
     //  plugins: [ nxViteTsPaths() ],
@@ -51,25 +28,51 @@ export default defineConfig(() => {
     // Configuration for building your library.
     // See: https://vitejs.dev/guide/build.html#library-mode
     build: {
-      outDir: '../../../dist/libs/vanilla-utils/restful-client',
-      emptyOutDir: true,
-      reportCompressedSize: true,
       commonjsOptions: {
         transformMixedEsModules: true,
       },
+      emptyOutDir: true,
       lib: {
         // Could also be a dictionary or array of multiple entry points.
         entry: 'src/index.ts',
-        name: 'restful-client',
         fileName: 'index',
         // Change this to the formats you want to support.
         // Don't forget to update your package.json as well.
         formats: ['es' as const],
+
+        name: 'restful-client',
       },
+      outDir: '../../../dist/libs/vanilla-utils/restful-client',
+      reportCompressedSize: true,
       rollupOptions: {
         // Use the automatically detected external packages
         external,
       },
     },
+
+    cacheDir: '../../../node_modules/.vite/libs/vanilla-utils/restful-client',
+
+    plugins: [
+      nxViteTsPaths(),
+      nxCopyAssetsPlugin(['*.md']),
+
+      dts({
+        beforeWriteFile: (filePath, content) => {
+          // Generic replace function for workspace packages (converts relative paths to @benzinga/package format)
+          const updatedContent = content.replace(workspacePackageRegex, (match, packageName) => {
+            return `from '@benzinga/${packageName}'`;
+          });
+          return { content: updatedContent, filePath };
+        },
+
+        entryRoot: path.join(__dirname, 'src'),
+
+        // Preserve the import paths for external modules
+        staticImport: true,
+        tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
+      }),
+    ],
+
+    root: __dirname,
   };
 });

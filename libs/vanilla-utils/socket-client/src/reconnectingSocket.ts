@@ -23,15 +23,17 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
   private sleepWakeUpSubscription?: Subscription<SubscribableSleepWakeUp>;
   private webSocketProps: WebSocketProps;
   private url: URL;
-  private readonly urlFunc?: ((prevUrl: URL | null) => Promise<URL | undefined>);
-  private readonly webSocketPropsFunc?: ((prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>);
+  private readonly urlFunc?: (prevUrl: URL | null) => Promise<URL | undefined>;
+  private readonly webSocketPropsFunc?: (
+    prevWebSocketProps?: WebSocketProps | undefined,
+  ) => Promise<WebSocketProps | undefined>;
   private state: ReconnectSocketState = 'closed';
 
   constructor(
     initUrl: URL,
     initWebSocketProps?: WebSocketProps,
-    onGetUrl?: ((prevUrl: URL | null) => Promise<URL | undefined>),
-    onGetWebSocketProps?: ((prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>)
+    onGetUrl?: (prevUrl: URL | null) => Promise<URL | undefined>,
+    onGetWebSocketProps?: (prevWebSocketProps?: WebSocketProps | undefined) => Promise<WebSocketProps | undefined>,
   ) {
     super();
 
@@ -99,7 +101,7 @@ export class SubscribableReconnectingSocket<RESPFormat = unknown, REQFormat = un
 
   protected override onZeroSubscriptions = (): void => {
     this.close();
-  }
+  };
 
   private readonly onMessage = (event: SubscribableSocketEvent<RESPFormat>) => {
     switch (event.type) {

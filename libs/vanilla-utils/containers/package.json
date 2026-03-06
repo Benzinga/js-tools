@@ -8,7 +8,9 @@
   },
   "private": false,
   "version": "1.0.5",
-  "dependencies": { },
+  "dependencies": { 
+    "@benzinga/subscribable": "2.0.10"
+  },
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts"

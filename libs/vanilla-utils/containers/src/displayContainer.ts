@@ -89,9 +89,7 @@ export abstract class DisplayContainer<
   ContainerType,
   Event extends SubscribableEvent<string>,
   BufferType extends Buffer<ContainerType>,
-> extends Subscribable<
-  DisplayContainerEvent<ContainerType>
-> {
+> extends Subscribable<DisplayContainerEvent<ContainerType>> {
   private liveBuffer: BufferType;
   private historicBuffer: BufferType;
   private displayBuffer: BufferType;

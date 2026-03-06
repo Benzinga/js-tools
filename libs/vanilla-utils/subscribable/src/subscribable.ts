@@ -64,7 +64,7 @@ export abstract class Subscribable<
     const [id, base] = this._baseSubscribe(callback, args, types);
     this.onSubscribe(id, args);
     return base;
-  }
+  };
 
   protected readonly _baseSubscribe = (
     callback: (event: Events) => void,
@@ -99,34 +99,34 @@ export abstract class Subscribable<
         },
       },
     ];
-  }
+  };
 
   protected onFirstSubscription = (_args?: SubscriberArgs): void => {
     return undefined;
-  }
+  };
   protected onZeroSubscriptions = (): void => {
     return undefined;
-  }
+  };
   protected onSubscribe = (_id: SubscriberId, _args?: SubscriberArgs): void => {
     return undefined;
-  }
+  };
   protected onUpdate = (_id: SubscriberId, _args?: SubscriberArgs): void => {
     return undefined;
-  }
+  };
   protected onUnsubscribe = (_id: SubscriberId, _args?: UnsubscribeArgs): void => {
     return undefined;
-  }
+  };
 
   protected readonly hasSubscribers = (): boolean => {
     return !!this.subscribers.size;
-  }
+  };
   protected readonly numberOfSubscribers = (): number => {
     return this.subscribers.size;
-  }
+  };
 
   protected readonly dispatch = (event: Events, subscriberIds?: SubscriberId[]): void => {
     return this._baseDispatch(event, subscriberIds);
-  }
+  };
   protected readonly _baseDispatch = (event: Events, subscriberIds?: SubscriberId[]): void => {
     Subscribable.logger?.('dispatch', this.subscribableName ?? this.constructor.name, event);
     // find all subscribers that wish to be notified and notify them
@@ -138,7 +138,7 @@ export abstract class Subscribable<
     } else {
       this.subscribers.forEach(value => (value.types?.some(t => t === event.type) ?? true) && value.callback(event));
     }
-  }
+  };
 
   private readonly unsubscribe = (id: number, args?: UnsubscribeArgs): void => {
     Subscribable.logger?.('unsubscribe', this.subscribableName ?? this.constructor.name, id);
@@ -147,7 +147,7 @@ export abstract class Subscribable<
     if (this.subscribers.size === 0) {
       this.onZeroSubscriptions();
     }
-  }
+  };
 }
 
 export abstract class ListenableSubscribable<
@@ -162,14 +162,14 @@ export abstract class ListenableSubscribable<
       listener => (listener.types?.some(t => t === event.type) ?? true) && listener.callback(event),
     );
     return this._baseDispatch(event, subscriberIds);
-  }
+  };
 
   public readonly listen = (
     callback: (event: Events) => void,
     types?: Events['type'][],
   ): SubscriptionType<Events, SubscriberArgs, UnsubscribeArgs> => {
     return this._baseListen(callback, types);
-  }
+  };
 
   protected readonly _baseListen = (
     callback: (event: Events) => void,
@@ -195,9 +195,9 @@ export abstract class ListenableSubscribable<
         });
       },
     };
-  }
+  };
 
   private readonly unListen = (id: number): void => {
     this.listeners.delete(id);
-  }
+  };
 }

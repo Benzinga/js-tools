@@ -8,12 +8,10 @@
   },
   "private": false,
   "version": "1.0.5",
-  "dependencies": {
-    "@swc/helpers": "~0.5.11"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@benzinga/subscribable": ">=1.0.0",
-    "@benzinga/safe-await": ">=2.0.0",
+    "@benzinga/safe-await": "1.0.6",
     "@benzinga/session": ">=1.0.0"
   },
   "type": "module",

@@ -11,5 +11,8 @@
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
-  "dependencies": {}
+  "dependencies": {
+    "@benzinga/subscribable": "2.0.10",
+    "@benzinga/safe-await": "1.0.6"
+  }
 }
