@@ -74,7 +74,7 @@
     "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
     "nx": "20.7.2",
-    "postcss": "8.4.38",
+    "postcss": "8.5.10",
     "prettier": "^3.8.1",
     "rollup": "^4.59.0",
     "swc-loader": "0.1.15",
@@ -98,7 +98,7 @@
   ],
   "overrides": {
     "form-data": "^4.0.4",
-    "axios": "^1.8.2",
+    "axios": "^1.16.1",
     "playwright": "^1.55.1",
     "validator": "^13.15.22",
     "jws": "^3.2.3",
@@ -107,7 +107,7 @@
     "koa": "^2.16.4",
     "http-proxy-middleware": "^3.0.4",
     "js-yaml": "^4.1.1",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "on-headers": "^1.1.0",
     "tmp": "^0.2.4",
     "webpack": "^5.104.1",
@@ -123,6 +123,9 @@
     "file-type": "^21.3.4",
     "@verdaccio/core": {
       "ajv": "^8.18.0"
-    }
+    },
+    "@babel/plugin-transform-modules-systemjs": "^7.29.4",
+    "follow-redirects": "^1.16.0",
+    "fast-uri": "^3.1.1"
   }
 }
