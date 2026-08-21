@@ -78,8 +78,7 @@ export const useSubscriber = <
     }
   } else {
     state.current.subscription = state.current.subscribable?.subscribe(onEvent, args, types) as
-      | Subscription<T>
-      | undefined;
+      Subscription<T> | undefined;
   }
   state.current.previousCallback = callback;
   state.current.previousArgs = args;

@@ -99,14 +99,7 @@ export type RequiredKeys<T> = {
 export type PickRequiredProperties<T> = Pick<T, RequiredKeys<T>>;
 
 export type RecursiveExcludeFunctions<T> = T extends
-  | string
-  | number
-  | bigint
-  | boolean
-  | null
-  | undefined
-  | symbol
-  | Date
+  string | number | bigint | boolean | null | undefined | symbol | Date
   ? T
   : // Arrays, Sets and Maps and their readonly counterparts have their items made
     // deeply partial, but their own instances are left untouched
@@ -127,15 +120,13 @@ export type RecursiveExcludeFunctions<T> = T extends
                 ? ReadonlyMap<RecursiveExcludeFunctions<KeyType>, RecursiveExcludeFunctions<ValueType>>
                 : // ...and finally, all other objects.
                   {
-                    [K in Exclude<
-                      keyof PickOptionalProperties<T>,
-                      FunctionPropertyNames<T>
-                    >]?: RecursiveExcludeFunctions<T[K]>;
+                    [
+                      K in Exclude<keyof PickOptionalProperties<T>, FunctionPropertyNames<T>>
+                    ]?: RecursiveExcludeFunctions<T[K]>;
                   } & {
-                    [K in Exclude<
-                      keyof PickRequiredProperties<T>,
-                      FunctionPropertyNames<T>
-                    >]: RecursiveExcludeFunctions<T[K]>;
+                    [
+                      K in Exclude<keyof PickRequiredProperties<T>, FunctionPropertyNames<T>>
+                    ]: RecursiveExcludeFunctions<T[K]>;
                   };
 
 type FunctionPropertyNames<T> = {
@@ -146,14 +137,7 @@ export type RecursiveOptinalizeUndefined<T> = RecursiveExtractOptinalizeUndefine
   RecursiveExluseOptinalizeUndefined<T>;
 
 type RecursiveExtractOptinalizeUndefined<T> = T extends
-  | string
-  | number
-  | bigint
-  | boolean
-  | null
-  | undefined
-  | symbol
-  | Date
+  string | number | bigint | boolean | null | undefined | symbol | Date
   ? T
   : // Arrays, Sets and Maps and their readonly counterparts have their items made
     // deeply partial, but their own instances are left untouched
@@ -177,14 +161,7 @@ type RecursiveExtractOptinalizeUndefined<T> = T extends
                   };
 
 type RecursiveExluseOptinalizeUndefined<T> = T extends
-  | string
-  | number
-  | bigint
-  | boolean
-  | null
-  | undefined
-  | symbol
-  | Date
+  string | number | bigint | boolean | null | undefined | symbol | Date
   ? T
   : // Arrays, Sets and Maps and their readonly counterparts have their items made
     // deeply partial, but their own instances are left untouched

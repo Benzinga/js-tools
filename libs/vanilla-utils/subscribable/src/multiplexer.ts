@@ -15,9 +15,7 @@ interface SubscribableMultiplexerRemovedEvent {
 }
 
 export type SubscribableMultiplexerEvent<T extends SubscribableEvent<string>, SubscriberArgs = unknown> =
-  | SubscribableMultiplexerAddEvent<T, SubscriberArgs>
-  | SubscribableMultiplexerRemovedEvent
-  | T;
+  SubscribableMultiplexerAddEvent<T, SubscriberArgs> | SubscribableMultiplexerRemovedEvent | T;
 
 export class SubscribableMultiplexer<
   Events extends SubscribableEvent<string>,

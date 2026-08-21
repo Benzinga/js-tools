@@ -24,10 +24,7 @@ interface StateChangedEvent {
 }
 
 export type ContainerEvent<ContainerType> =
-  | ClearEvent<ContainerType>
-  | UpdateEvent<ContainerType>
-  | QueuedEvent<ContainerType>
-  | StateChangedEvent;
+  ClearEvent<ContainerType> | UpdateEvent<ContainerType> | QueuedEvent<ContainerType> | StateChangedEvent;
 
 export class SubscriberContainer<ContainerType, BufferType extends Buffer<ContainerType>> extends Subscribable<
   ContainerEvent<ContainerType>
