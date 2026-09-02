@@ -10,16 +10,14 @@ export class SafeError<TYPE extends string = string, DATA = unknown> extends Err
 }
 
 export type SafeType<T, ErrorType extends string = string, ErrorData = unknown> =
-  | { err?: undefined; ok: T }
-  | { err: SafeError<ErrorType, ErrorData>; ok?: undefined };
+  { err?: undefined; ok: T } | { err: SafeError<ErrorType, ErrorData>; ok?: undefined };
 
 export type SafePromise<T, ErrorType extends string = string, ErrorData = unknown> = Promise<
   SafeType<T, ErrorType, ErrorData>
 >;
 
 export type SafeMultiErrorType<T, ErrorType extends string = string, ErrorData = unknown> =
-  | { err?: undefined; ok: T }
-  | { err: SafeError<ErrorType, ErrorData>[]; ok?: undefined };
+  { err?: undefined; ok: T } | { err: SafeError<ErrorType, ErrorData>[]; ok?: undefined };
 
 export type SafePromiseMultiError<T, ErrorType extends string = string, ErrorData = unknown> = Promise<
   SafeMultiErrorType<T, ErrorType, ErrorData>
