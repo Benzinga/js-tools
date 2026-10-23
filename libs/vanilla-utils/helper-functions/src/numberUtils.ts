@@ -48,7 +48,7 @@ export const formatPrice = (
     return '';
   }
 
-  // 0 returns `0` with no deimal places
+  // 0 returns `0` with no decimal places
   if (input === 0) {
     return '0';
   }
