@@ -53,7 +53,7 @@ const checkResponse = (response: Response): SafeType<Response, 'response', Respo
     // );
     return {
       err: new SafeError(
-        `${response.status} Oops! looks like something went wrong. Please contact our lovely ♥ Support Staff ♥ for help.`,
+        `${response.status} Oops! Looks like something went wrong. Please contact our lovely ♥ Support Staff ♥ for help.`,
         'response',
         response,
       ),
@@ -111,7 +111,7 @@ export const safeResilientFetch = async <T = Response>(
 };
 
 /**
-  all this function does is convert type HeadersInit = Headers | string[][] | Record<string, string> to Header
+  all this function does is convert type HeadersInit = Headers | string[][] | Record<string, string> to Headers
  */
 export const genHeaders = (headers?: HeadersInit): Headers => {
   let newHeaders = new Headers();
